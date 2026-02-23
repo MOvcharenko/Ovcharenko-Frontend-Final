@@ -4,6 +4,8 @@ A modern, efficient flashcard study application built with React, TypeScript, an
 
 ## App Theme
 
+I chose the Study Flashcard System because it strikes a strong balance between technical depth and personal utility. I actively use flashcard tools for studying, so I have a clear mental model of what good UX looks like and a genuine interest in building something I'd actually want to use. On the complexity side, implementing a spaced repetition algorithm (SM-2) introduces real business logic beyond simple CRUD — each card rating triggers a computation that updates interval, ease factor, and due date, which means state changes have meaningful consequences and need to be modeled carefully. The deck/card/session relationship also creates interesting data management challenges around filtering due cards across decks and tracking session statistics in real time. 
+
 FlashFlow is designed as a clean, distraction-free study companion that emphasizes rapid card review and progressive mastery. The interface prioritizes quick feedback loops and visual clarity to support focused study sessions.
 
 ## Tech Stack
