@@ -1,14 +1,17 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { useFlashcards } from '../hooks/useFlashcards';
 
 function HomePage() {
-  // Placeholder: In a real app, this would be populated from state/context
-  const decks = [
-    { id: '1', title: 'Spanish Vocabulary', description: 'Common Spanish words' },
-    { id: '2', title: 'Math Formulas', description: 'Important mathematical formulas' },
-    { id: '3', title: 'Biology Terms', description: 'Key biology definitions' },
-  ]
+  const { state, addDeck, deleteDeck, getCardsDueToday } = useFlashcards();
 
-  const cardsDueToday = 12
+  const cardsDueToday = getCardsDueToday().length;
+
+  function handleCreateDeck() {
+    const title = prompt('Deck title:');
+    if (!title?.trim()) return;
+    const description = prompt('Deck description:') ?? '';
+    addDeck(title.trim(), description.trim());
+  }
 
   return (
     <div className="home-page">
@@ -20,27 +23,37 @@ function HomePage() {
           <h3>{cardsDueToday}</h3>
           <p>Cards Due Today</p>
         </div>
+        <div className="stat-card">
+          <h3>{state.decks.length}</h3>
+          <p>Total Decks</p>
+        </div>
       </section>
 
       <section className="decks-section">
         <h2>Your Decks</h2>
-        <div className="decks-list">
-          {decks.map((deck) => (
-            <div key={deck.id} className="deck-item">
-              <Link to={`/decks/${deck.id}`}>
-                <h3>{deck.title}</h3>
-                <p>{deck.description}</p>
-              </Link>
-            </div>
-          ))}
-        </div>
+        {state.decks.length === 0 ? (
+          <p>No decks yet — create one below!</p>
+        ) : (
+          <div className="decks-list">
+            {state.decks.map(deck => (
+              <div key={deck.id} className="deck-item">
+                <Link to={`/decks/${deck.id}`}>
+                  <h3>{deck.title}</h3>
+                  <p>{deck.description}</p>
+                  <small>{deck.cards.length} cards</small>
+                </Link>
+                <button onClick={() => deleteDeck(deck.id)}>Delete</button>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       <section className="action-section">
-        <button>+ Create New Deck</button>
+        <button onClick={handleCreateDeck}>+ Create New Deck</button>
       </section>
     </div>
-  )
+  );
 }
 
-export default HomePage
+export default HomePage;

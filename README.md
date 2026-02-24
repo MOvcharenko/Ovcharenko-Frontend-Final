@@ -133,6 +133,29 @@ npm run build
 npm run lint
 ```
 
-## Notes
+## Hook Operations
 
-This scaffolding was created with AI assistance using Claude Haiku 4.5.
+1. **Deck management** – create, delete, and rename decks; state kept in `AppState.decks`.
+2. **Card management** – add, remove, edit, reset single cards or entire decks; new cards start with default SRS values.
+3. **Study session control** – start a session, rate cards (which updates interval/ease/duedate via `computeNextReview`), and mark the session complete.
+4. **Query helpers** – read-only helpers such as `getDeckById`, `getCardsDueToday`, `getSessionStats`, and `getDeckStats` provide derived information for UI components.
+5. **State initialization utilities** – internal helpers like `makeCard` and `todayISO` keep timestamps and defaults consistent.
+
+## Running Tests
+
+```bash
+npm install
+npm run test
+```
+
+### Test Coverage
+
+- **Deck operations** verify that decks start empty, can be added, updated, and deleted individually.
+- **Card operations** ensure cards are assigned to the correct deck, can be edited, removed, and reset to default SRS values.
+- **Study session behavior** covers session start/end, rating a card updates its SRS fields and session history, and statistics calculations.
+- **Derived query tests** confirm `getDeckById`, `getDeckStats`, and `getCardsDueToday` return accurate results across states.
+- **Edge cases** handle scenarios like deleting the active deck, rating without an active session, and missing deck lookups.
+
+### AI Usage Statement
+
+The project structure and initial scaffolding were generated with AI assistance (internally via Copilot/Claude), while custom hook logic and tests were hand‑crafted based on requirements.
