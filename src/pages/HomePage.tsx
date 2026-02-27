@@ -1,5 +1,8 @@
-import { Link } from 'react-router-dom';
 import { useFlashcards } from '../hooks/useFlashcards';
+import DeckList from '../components/DeckList';
+import StatsCard from '../components/StatsCard';
+import PageTitle from '../components/PageTitle';
+import Subtitle from '../components/Subtitle';
 
 function HomePage() {
   const { state, addDeck, deleteDeck, getCardsDueToday } = useFlashcards();
@@ -15,38 +18,17 @@ function HomePage() {
 
   return (
     <div className="home-page">
-      <h1>Study Flashcard System</h1>
-      <p className="subtitle">Welcome to FlashFlow</p>
+      <PageTitle>Study Flashcard System</PageTitle>
+      <Subtitle>Welcome to FlashFlow</Subtitle>
 
       <section className="stats">
-        <div className="stat-card">
-          <h3>{cardsDueToday}</h3>
-          <p>Cards Due Today</p>
-        </div>
-        <div className="stat-card">
-          <h3>{state.decks.length}</h3>
-          <p>Total Decks</p>
-        </div>
+        <StatsCard label="Cards Due Today" value={cardsDueToday} />
+        <StatsCard label="Total Decks" value={state.decks.length} />
       </section>
 
       <section className="decks-section">
         <h2>Your Decks</h2>
-        {state.decks.length === 0 ? (
-          <p>No decks yet — create one below!</p>
-        ) : (
-          <div className="decks-list">
-            {state.decks.map(deck => (
-              <div key={deck.id} className="deck-item">
-                <Link to={`/decks/${deck.id}`}>
-                  <h3>{deck.title}</h3>
-                  <p>{deck.description}</p>
-                  <small>{deck.cards.length} cards</small>
-                </Link>
-                <button onClick={() => deleteDeck(deck.id)}>Delete</button>
-              </div>
-            ))}
-          </div>
-        )}
+        <DeckList decks={state.decks} onDelete={deleteDeck} />
       </section>
 
       <section className="action-section">

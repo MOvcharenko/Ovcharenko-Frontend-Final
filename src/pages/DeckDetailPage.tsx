@@ -1,5 +1,9 @@
 import { useParams, Link } from 'react-router-dom';
 import { useFlashcards } from '../hooks/useFlashcards';
+import DeckStats from '../components/DeckStats';
+import CardList from '../components/CardList';
+import PageTitle from '../components/PageTitle';
+import Subtitle from '../components/Subtitle';
 
 function DeckDetailPage() {
   const { deckId } = useParams<{ deckId: string }>();
@@ -24,17 +28,17 @@ function DeckDetailPage() {
 
   return (
     <div className="deck-detail-page">
-      <h1>{deck.title}</h1>
+      <PageTitle>{deck.title}</PageTitle>
 
       <section className="deck-info">
-        <p className="deck-description">{deck.description}</p>
+        <Subtitle>{deck.description}</Subtitle>
         {stats && (
-          <div className="deck-stats">
-            <span>Total: {stats.total}</span>
-            <span>New: {stats.newCards}</span>
-            <span>Learning: {stats.learning}</span>
-            <span>Mastered: {stats.mastered}</span>
-          </div>
+          <DeckStats
+            total={stats.total}
+            newCards={stats.newCards}
+            learning={stats.learning}
+            mastered={stats.mastered}
+          />
         )}
       </section>
 
@@ -43,20 +47,11 @@ function DeckDetailPage() {
         <button onClick={handleAddCard}>+ Add Card</button>
         <button onClick={() => resetDeck(deck.id)}>Reset Deck Progress</button>
 
-        {deck.cards.length === 0 ? (
-          <p>No cards yet — add one above!</p>
-        ) : (
-          <div className="cards">
-            {deck.cards.map(card => (
-              <div key={card.id} className={`card card-${card.status}`}>
-                <div className="card-front"><strong>Q:</strong> {card.front}</div>
-                <div className="card-back"><strong>A:</strong> {card.back}</div>
-                <small>Status: {card.status} | Due: {card.dueDate.slice(0, 10)}</small>
-                <button onClick={() => deleteCard(deck.id, card.id)}>Delete</button>
-              </div>
-            ))}
-          </div>
-        )}
+        <CardList
+          cards={deck.cards}
+          onDelete={(cardId) => deleteCard(deck.id, cardId)}
+          showDue
+        />
       </section>
 
       <section className="action-section">

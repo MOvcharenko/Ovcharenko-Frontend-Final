@@ -2,6 +2,13 @@ import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import type { Rating } from '../types';
 import { useFlashcards } from '../hooks/useFlashcards';
+import CardFlip from '../components/CardFlip';
+import RatingButtons from '../components/RatingButtons';
+import SessionSummary from '../components/SessionSummary';
+import StudyIntro from '../components/StudyIntro';
+import StudyHeader from '../components/StudyHeader';
+import PageTitle from '../components/PageTitle';
+import Subtitle from '../components/Subtitle';
 
 function StudyPage() {
   const { deckId } = useParams<{ deckId: string }>();
@@ -43,37 +50,29 @@ function StudyPage() {
   // Session complete
   if (session?.isComplete) {
     const stats = getSessionStats();
-    return (
-      <div className="study-page">
-        <h1>Session Complete! 🎉</h1>
-        {stats && (
-          <div className="session-stats">
-            <p>Cards reviewed: {stats.total}</p>
-            <p>Correct (good/easy): {stats.correct}</p>
-            <p>Incorrect (hard/again): {stats.incorrect}</p>
-            <p>Accuracy: {stats.accuracy}%</p>
-          </div>
-        )}
-        <Link to={`/decks/${deck.id}`}>Back to Deck</Link>
-      </div>
-    );
+    return stats ? (
+      <SessionSummary
+        deckId={deck.id}
+        total={stats.total}
+        correct={stats.correct}
+        incorrect={stats.incorrect}
+        accuracy={stats.accuracy}
+      />
+    ) : null;
   }
 
   // Pre-session screen
   if (!sessionStarted) {
     return (
-      <div className="study-page">
-        <h1>Study: {deck.title}</h1>
-        <p>{dueCards.length} cards due today.</p>
-        {dueCards.length === 0 ? (
-          <>
-            <p>No cards due — come back later!</p>
-            <Link to={`/decks/${deck.id}`}>Back to Deck</Link>
-          </>
-        ) : (
-          <button onClick={handleStart}>Start Session</button>
-        )}
-      </div>
+      <>
+        <PageTitle>Study: {deck.title}</PageTitle>
+        <StudyIntro
+          deckTitle={deck.title}
+          dueCount={dueCards.length}
+          onStart={handleStart}
+          deckId={deck.id}
+        />
+      </>
     );
   }
 
@@ -82,32 +81,20 @@ function StudyPage() {
 
   return (
     <div className="study-page">
-      <div className="study-header">
-        <h1>Study: {deck.title}</h1>
-        <div className="progress">
-          Card {currentIndex + 1} of {dueCards.length}
-        </div>
-      </div>
+      <StudyHeader
+        title={`Study: ${deck.title}`}
+        progressText={`Card ${currentIndex + 1} of ${dueCards.length}`}
+      />
 
       <div className="study-container">
-        <div
-          className={`card-flip-container ${isFlipped ? 'flipped' : ''}`}
-          onClick={() => setIsFlipped(f => !f)}
-        >
-          <div className="card-content">
-            <p>{isFlipped ? currentCard.back : currentCard.front}</p>
-            <small>{isFlipped ? 'Answer' : 'Question'} — click to flip</small>
-          </div>
-        </div>
+        <CardFlip
+          front={currentCard.front}
+          back={currentCard.back}
+          flipped={isFlipped}
+          onFlip={() => setIsFlipped(f => !f)}
+        />
 
-        {isFlipped && (
-          <div className="rating-buttons">
-            <button className="btn btn-again" onClick={() => handleRating('again')}>Again</button>
-            <button className="btn btn-hard"  onClick={() => handleRating('hard')}>Hard</button>
-            <button className="btn btn-good"  onClick={() => handleRating('good')}>Good</button>
-            <button className="btn btn-easy"  onClick={() => handleRating('easy')}>Easy</button>
-          </div>
-        )}
+        {isFlipped && <RatingButtons onRate={handleRating} />}
       </div>
     </div>
   );
