@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import type { Rating } from '../types';
-import { useFlashcards } from '../hooks/useFlashcards';
+import { useFlashcardsContext } from '../context/FlashcardsContext';
 import CardFlip from '../components/CardFlip';
 import RatingButtons from '../components/RatingButtons';
 import SessionSummary from '../components/SessionSummary';
@@ -13,7 +13,7 @@ import Subtitle from '../components/Subtitle';
 function StudyPage() {
   const { deckId } = useParams<{ deckId: string }>();
   const { state, startSession, rateCard, endSession, getDeckById, getSessionStats, getCardsDueToday } =
-    useFlashcards();
+    useFlashcardsContext();
 
   const [isFlipped, setIsFlipped] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);

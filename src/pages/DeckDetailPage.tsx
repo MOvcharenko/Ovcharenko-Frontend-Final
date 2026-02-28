@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-import { useFlashcards } from '../hooks/useFlashcards';
+import { useFlashcardsContext } from '../context/FlashcardsContext';
 import DeckStats from '../components/DeckStats';
 import CardList from '../components/CardList';
 import PageTitle from '../components/PageTitle';
@@ -7,7 +7,7 @@ import Subtitle from '../components/Subtitle';
 
 function DeckDetailPage() {
   const { deckId } = useParams<{ deckId: string }>();
-  const { addCard, deleteCard, resetDeck, getDeckById, getDeckStats } = useFlashcards();
+  const { addCard, deleteCard, resetDeck, getDeckById, getDeckStats } = useFlashcardsContext();
 
   const deck = deckId ? getDeckById(deckId) : null;
 

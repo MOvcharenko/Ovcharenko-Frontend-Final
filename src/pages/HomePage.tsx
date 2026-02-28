@@ -1,11 +1,11 @@
-import { useFlashcards } from '../hooks/useFlashcards';
+import { useFlashcardsContext } from '../context/FlashcardsContext';
 import DeckList from '../components/DeckList';
 import StatsCard from '../components/StatsCard';
 import PageTitle from '../components/PageTitle';
 import Subtitle from '../components/Subtitle';
 
 function HomePage() {
-  const { state, addDeck, deleteDeck, getCardsDueToday } = useFlashcards();
+  const { state, addDeck, deleteDeck, getCardsDueToday } = useFlashcardsContext();
 
   const cardsDueToday = getCardsDueToday().length;
 
