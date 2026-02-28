@@ -1,4 +1,4 @@
-import { Rating } from '../types';
+import type { Rating } from '../types';
 
 interface RatingButtonsProps {
   onRate: (r: Rating) => void;

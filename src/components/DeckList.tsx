@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Deck } from '../types';
+import type { Deck } from '../types';
 import { Link } from 'react-router-dom';
 
 interface DeckListProps {
