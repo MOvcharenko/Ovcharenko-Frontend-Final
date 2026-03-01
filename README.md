@@ -100,15 +100,55 @@ The algorithm automatically calculates the next due date based on the new interv
 
 ```
 src/
-├── types.ts              # TypeScript interfaces and types
-├── utils/
-│   └── srs.ts            # SM-2 algorithm implementation
+├── types.ts                    # Single source of truth for TypeScript interfaces
+├── App.tsx                     # Main router and layout component
+├── main.tsx                    # React entry point with BrowserRouter + FlashcardsProvider
+│
+├── context/
+│   └── FlashcardsContext.tsx   # Context provider for state distribution across pages
+│
+├── hooks/
+│   ├── useFlashcards.ts        # Custom hook: all state operations (CRUD + queries)
+│   └── useFlashcards.test.ts   # Unit tests for hook (20 tests covering all operations)
+│
+├── components/
+│   ├── DeckList.tsx            # Renders list of decks with optional delete
+│   ├── DeckStats.tsx           # Shows deck statistics (total, new, learning, mastered)
+│   ├── CardList.tsx            # Renders list of cards in a deck
+│   ├── CardFlip.tsx            # Flip animation and interaction for card review
+│   ├── RatingButtons.tsx       # Four rating buttons (Again, Hard, Good, Easy)
+│   ├── StatsCard.tsx           # Single stat display card
+│   ├── SessionSummary.tsx      # End-of-session stats and navigation
+│   ├── StudyIntro.tsx          # Pre-session screen showing card count
+│   ├── StudyHeader.tsx         # Progress indicator (e.g., "Card 1 of 5")
+│   ├── NavBar.tsx              # Top navigation with FlashFlow branding
+│   ├── PageTitle.tsx           # Page heading abstraction
+│   └── Subtitle.tsx            # Secondary heading abstraction
+│
 ├── pages/
-│   ├── HomePage.tsx      # Deck list and statistics
-│   ├── DeckDetailPage.tsx# Deck details and card list
-│   └── StudyPage.tsx     # Card review interface
-├── App.tsx               # Main router configuration
-└── main.tsx              # Application entry point
+│   ├── HomePage.tsx            # Deck list, stats, create deck button
+│   ├── DeckDetailPage.tsx      # Deck details, card management, start session button
+│   └── StudyPage.tsx           # Active study session with card flip and ratings
+│
+├── utils/
+│   ├── srs.ts                  # Pure SM-2 algorithm: computeNextReview()
+│   └── storage.ts              # localStorage persistence (placeholder for future)
+│
+├── test/
+│   └── setup.ts                # Vitest + @testing-library setup
+│
+└── CSS/
+    ├── index.css               # Global styles
+    └── App.css                 # Component-specific styles
+```
+
+### Architecture Notes
+
+- **Single source of truth**: All types defined in `src/types.ts`; all imports use `import type`
+- **State management**: `useFlashcards` hook holds all state through React's `useState`
+- **Context distribution**: `FlashcardsContext` wraps the entire app (in `main.tsx`), making hook output available to all pages
+- **Component abstraction**: Pages compose reusable UI components; no raw HTML/CSS in pages
+- **Pure utilities**: `srs.ts` contains zero React dependencies; can be tested independently
 ```
 
 ## Route Structure
