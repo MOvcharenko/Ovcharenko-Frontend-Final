@@ -2,10 +2,17 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useFlashcards } from './useFlashcards';
 import type { AppState } from '../types';
+import { useFlashcardsStore, DEFAULT_STATE } from '../store/flashcardsStore';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
+beforeEach(() => {
+  // reset global store state before each test
+  useFlashcardsStore.setState(DEFAULT_STATE);
+});
+
 function freshHook(initial?: AppState) {
+  if (initial) useFlashcardsStore.setState(initial);
   return renderHook(() => useFlashcards(initial));
 }
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import type { Rating } from '../types';
 import { useFlashcardsContext } from '../context/FlashcardsContext';
 import CardFlip from '../components/CardFlip';
@@ -8,7 +8,6 @@ import SessionSummary from '../components/SessionSummary';
 import StudyIntro from '../components/StudyIntro';
 import StudyHeader from '../components/StudyHeader';
 import PageTitle from '../components/PageTitle';
-import Subtitle from '../components/Subtitle';
 
 function StudyPage() {
   const { deckId } = useParams<{ deckId: string }>();

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { Deck } from '../types';
 import { Link } from 'react-router-dom';
 
