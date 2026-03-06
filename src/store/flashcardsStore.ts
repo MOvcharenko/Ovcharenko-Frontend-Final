@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { v4 as uuidv4 } from 'uuid';
 import type {
   AppState,
@@ -74,12 +75,14 @@ export interface FlashcardsStore extends AppState {
     | null;
 }
 
-export const useFlashcardsStore = create<FlashcardsStore>((set, get) => ({
-  ...DEFAULT_STATE,
-  loading: false,
-  error: null,
+export const useFlashcardsStore = create<FlashcardsStore>()(
+  persist(
+    (set, get) => ({
+      ...DEFAULT_STATE,
+      loading: false,
+      error: null,
 
-  addDeck: (title, description) => {
+      addDeck: (title, description) => {
     const id = uuidv4();
     const newDeck: Deck = {
       id,
@@ -97,17 +100,16 @@ export const useFlashcardsStore = create<FlashcardsStore>((set, get) => ({
   },
 
   deleteDeck: (deckId) => {
-    api.deleteDeck(deckId).catch(() => {
-      /* ignore errors in mock */
-    });
-    set((prev) => ({
-      ...prev,
-      decks: prev.decks.filter((d) => d.id !== deckId),
-      activeSession:
-        prev.activeSession?.deckId === deckId ? null : prev.activeSession,
-    }));
-  },
-
+      api.deleteDeck(deckId).catch(() => {
+        /* ignore errors in mock */
+      });
+      set((prev) => ({
+        ...prev,
+        decks: prev.decks.filter((d) => d.id !== deckId),
+        activeSession:
+          prev.activeSession?.deckId === deckId ? null : prev.activeSession,
+      }));
+    },
   updateDeck: (deckId, updates) => {
     set((prev) => ({
       ...prev,
@@ -293,4 +295,12 @@ export const useFlashcardsStore = create<FlashcardsStore>((set, get) => ({
     const newCards = deck.cards.filter((c) => c.status === 'new').length;
     return { total, mastered, learning, newCards };
   },
-}));
+}),
+  {
+    name: 'flashflow-storage',
+    partialize: (state) => ({
+      decks: state.decks,
+      activeSession: state.activeSession,
+    }),
+  }
+));

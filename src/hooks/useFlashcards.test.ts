@@ -7,8 +7,28 @@ import { useFlashcardsStore, DEFAULT_STATE } from '../store/flashcardsStore';
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 beforeEach(() => {
+  // wipe any persisted state so tests start clean
+  localStorage.removeItem('flashflow-storage');
   // reset global store state before each test
   useFlashcardsStore.setState(DEFAULT_STATE);
+});
+
+// ensure persistence middleware writes to localStorage
+it('persists decks to localStorage', () => {
+  const { result } = freshHook();
+  act(() => {
+    result.current.addDeck('Persisted', 'desc');
+  });
+  // deck should have been added to in-memory state first
+  expect(result.current.state.decks).toHaveLength(1);
+
+  const stored = localStorage.getItem('flashflow-storage');
+  // sanity check before parsing
+  expect(stored).not.toBeNull();
+  // the serialized value should at least mention our deck title
+  if (stored) {
+    expect(stored).toContain('Persisted');
+  }
 });
 
 function freshHook(initial?: AppState) {

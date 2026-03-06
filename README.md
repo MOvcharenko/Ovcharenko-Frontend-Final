@@ -132,7 +132,7 @@ src/
 │
 ├── utils/
 │   ├── srs.ts                  # Pure SM-2 algorithm: computeNextReview()
-│   └── storage.ts              # localStorage persistence (placeholder for future)
+│   └── storage.ts              # localStorage helpers (used by store middleware)
 │
 ├── test/
 │   └── setup.ts                # Vitest + @testing-library setup
@@ -145,7 +145,7 @@ src/
 ### Architecture Notes
 
 - **Single source of truth**: All types defined in `src/types.ts`; all imports use `import type`
-- **State management**: `useFlashcards` hook holds all state through React's `useState`
+- **State management**: `useFlashcards` hook wraps a Zustand store which now persists deck data to `localStorage` via middleware
 - **Context distribution**: `FlashcardsContext` wraps the entire app (in `main.tsx`), making hook output available to all pages
 - **Component abstraction**: Pages compose reusable UI components; no raw HTML/CSS in pages
 - **Pure utilities**: `srs.ts` contains zero React dependencies; can be tested independently
