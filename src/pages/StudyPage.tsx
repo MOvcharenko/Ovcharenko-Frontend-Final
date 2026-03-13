@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import type { Rating } from '../types';
 import { useFlashcardsContext } from '../context/FlashcardsContext';
@@ -99,4 +99,4 @@ function StudyPage() {
   );
 }
 
-export default StudyPage;
+export default React.memo(StudyPage);

@@ -1,3 +1,4 @@
+import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useFlashcardsContext } from '../context/FlashcardsContext';
 import DeckStats from '../components/DeckStats';
@@ -63,4 +64,4 @@ function DeckDetailPage() {
   );
 }
 
-export default DeckDetailPage;
+export default React.memo(DeckDetailPage);

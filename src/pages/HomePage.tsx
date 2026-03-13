@@ -1,3 +1,4 @@
+import React from 'react';
 import { useFlashcardsContext } from '../context/FlashcardsContext';
 import DeckList from '../components/DeckList';
 import StatsCard from '../components/StatsCard';
@@ -38,4 +39,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default React.memo(HomePage);

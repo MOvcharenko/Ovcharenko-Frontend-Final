@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import type { Deck } from '../types';
 import { Link } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ interface DeckListProps {
   renderItem?: (deck: Deck) => ReactNode;
 }
 
-export default function DeckList({ decks, onDelete, renderItem }: DeckListProps) {
+function DeckList({ decks, onDelete, renderItem }: DeckListProps) {
   if (renderItem) {
     return <>{decks.map((d) => renderItem(d))}</>;
   }
@@ -34,3 +34,5 @@ export default function DeckList({ decks, onDelete, renderItem }: DeckListProps)
     </div>
   );
 }
+
+export default React.memo(DeckList);

@@ -1,0 +1,26 @@
+{
+  "decks": [
+    {
+      "id": "96f5c90d-5f81-491b-93c6-6edf89b072ba",
+      "title": "Test Deck",
+      "description": "",
+      "createdAt": "2026-03-13T16:16:09.552Z",
+      "cards": [
+        {
+          "id": "e77c9373-5332-4e5a-b064-ce689cf0563f",
+          "deckId": "96f5c90d-5f81-491b-93c6-6edf89b072ba",
+          "front": "Card Front 1",
+          "back": "Card Back 1",
+          "tags": [],
+          "status": "new",
+          "interval": 1,
+          "easeFactor": 2.5,
+          "dueDate": "2026-03-13T16:16:35.484Z",
+          "createdAt": "2026-03-13T16:16:35.484Z",
+          "lastReviewedAt": null
+        }
+      ]
+    }
+  ],
+  "activeSession": null
+}

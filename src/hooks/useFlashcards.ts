@@ -31,10 +31,19 @@ export function useFlashcards(initialState: AppState = DEFAULT_STATE) {
   const getDeckById = useFlashcardsStore((s) => s.getDeckById);
   const getCardsDueToday = useFlashcardsStore((s) => s.getCardsDueToday);
   const getSessionStats = useFlashcardsStore((s) => s.getSessionStats);
+  const loadDecks = useFlashcardsStore((s) => s.loadDecks);
   const getDeckStats = useFlashcardsStore((s) => s.getDeckStats);
+
+  const loading = useFlashcardsStore((s) => s.loading);
+  const error = useFlashcardsStore((s) => s.error);
+  const setError = useFlashcardsStore((s) => s.setError);
 
   return {
     state,
+    loading,
+    error,
+    setError,
+    loadDecks,
     addDeck,
     deleteDeck,
     updateDeck,

@@ -151,6 +151,11 @@ src/
 - **Pure utilities**: `srs.ts` contains zero React dependencies; can be tested independently
 ```
 
+Data is persisted on the backend in a file at `server/data/db.json`. The Express server
+stores the full `AppState` object with decks and active session information; the file is
+automatically created when the server first receives a write. **Both frontend and backend
+must be running simultaneously for the application to function.**
+
 ## Route Structure
 
 - **`/`** → Home page with deck list and daily stats
@@ -160,11 +165,14 @@ src/
 ## Getting Started
 
 ```bash
-# Install dependencies
+# Install dependencies (frontend & backend packages)
 npm install
 
-# Run development server
+# Start the frontend dev server
 npm run dev
+
+# In a separate terminal, start the backend API server
+npm run server
 
 # Build for production
 npm run build

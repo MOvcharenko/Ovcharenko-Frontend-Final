@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Card } from '../types';
 
 interface CardListProps {
@@ -6,7 +7,7 @@ interface CardListProps {
   showDue?: boolean;
 }
 
-export default function CardList({ cards, onDelete, showDue = false }: CardListProps) {
+function CardList({ cards, onDelete, showDue = false }: CardListProps) {
   if (cards.length === 0) {
     return <p>No cards yet — add one above!</p>;
   }
@@ -28,3 +29,5 @@ export default function CardList({ cards, onDelete, showDue = false }: CardListP
     </div>
   );
 }
+
+export default React.memo(CardList);
