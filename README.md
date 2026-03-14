@@ -14,6 +14,8 @@ FlashFlow is designed as a clean, distraction-free study companion that emphasiz
 - **Build Tool**: Vite
 - **Routing**: React Router v6
 - **Styling**: CSS modules and vanilla CSS
+- **Backend**: Local Express.js server with file-based JSON storage
+- **Authentication**: None (local app, no user accounts)
 
 ## Core Entities
 
@@ -181,6 +183,63 @@ npm run build
 npm run lint
 ```
 
+---
+
+## Project 5: Backend & Persistence
+
+### Backend Choice
+
+**Express.js with file-based JSON storage** (`server/data/db.json`). Chosen because it matches the existing TypeScript stack with zero additional infrastructure — no database server to install or configure, data is human-readable and inspectable, and the full `AppState` shape from `src/types.ts` maps directly to the file without a schema migration layer.
+
+### Authentication
+
+Authentication is not implemented. FlashFlow is a single-user local application — it runs entirely on `localhost` with no user accounts, no login flow, and no protected routes. Adding auth would introduce complexity (session tokens, protected route guards, a login page) that is out of scope for a personal study tool with no multi-user or remote access requirements.
+
+### How to Run
+
+Both the frontend and backend must be running simultaneously. Open two terminals:
+
+**Terminal 1 — Frontend:**
+```bash
+npm install       # first time only
+npm run dev       # starts Vite on http://localhost:5173
+```
+
+**Terminal 2 — Backend:**
+```bash
+npm run server    # starts Express on http://localhost:3001
+```
+
+The backend creates `server/data/db.json` automatically on the first write. If the file does not exist yet, all read operations return empty defaults — no manual setup required.
+
+> **Note:** The frontend will load but all deck operations will fail with network errors if the backend is not running.
+
+### Feature Verification
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Hook exposes `loading` / `error` | ✅ | `useFlashcards` returns `loading: boolean` and `error: string \| null` |
+| Persistence service in `src/services/api.ts` | ✅ | All backend calls go through this module |
+| Backend config in separate file | ✅ | `src/services/api-config.ts` contains `API_CONFIG` |
+| Components / hooks don't import external services | ✅ | Only via service module — no Firebase / Supabase |
+| All pages linked via navigation | ✅ | NavBar provides links; React Router handles routing |
+| Home / Dashboard page exists | ✅ | HomePage with deck list and stats |
+| Pages reachable via React Router links | ✅ | No manual URL entry required |
+| Service module has business logic + persistence | ⚠️ | Persistence in `services/`, business logic in `utils/` and store |
+| Settings / About pages | ❌ | Out of scope |
+| Auth service | N/A | No authentication required |
+| Login page | N/A | No auth |
+| Logout button | N/A | No auth |
+| Protected routes | N/A | No auth |
+| Auth session persistence | N/A | No auth |
+| AI agent instructions in project root | ✅ | `.github/copilot-instructions.md` |
+| High-level components follow single abstraction | ✅ | Pages compose reusable components |
+| Data survives page reload | ✅ | Persisted to `server/data/db.json` via Express |
+| Loading / error states visible in UI | ✅ | `ErrorBanner` component; `loading` flags in store |
+| `tsc --noEmit` passes | ✅ | Zero errors |
+| App runs without crashes | ✅ | `npm run dev` + `npm run server` |
+| README updated with backend / auth / run info | ✅ | This section |
+
 ## Hook Operations
 
 1. **Deck management** – create, delete, and rename decks; state kept in `AppState.decks`.
@@ -206,4 +265,4 @@ npm run test
 
 ### AI Usage Statement
 
-The project structure and initial scaffolding were generated with AI assistance (internally via Copilot/Claude), while custom hook logic and tests were hand‑crafted based on requirements.
+The project structure and initial scaffolding were generated with AI assistance (via Copilot and Claude), while custom hook logic, tests, and architectural decisions were hand-crafted based on project requirements.
