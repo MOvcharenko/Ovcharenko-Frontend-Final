@@ -226,7 +226,6 @@ The backend creates `server/data/db.json` automatically on the first write. If t
 | Home / Dashboard page exists | ✅ | HomePage with deck list and stats |
 | Pages reachable via React Router links | ✅ | No manual URL entry required |
 | Service module has business logic + persistence | ⚠️ | Persistence in `services/`, business logic in `utils/` and store |
-| Settings / About pages | ❌ | Out of scope |
 | Auth service | N/A | No authentication required |
 | Login page | N/A | No auth |
 | Logout button | N/A | No auth |
