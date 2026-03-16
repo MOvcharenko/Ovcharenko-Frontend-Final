@@ -142,6 +142,14 @@ src/
 └── CSS/
     ├── index.css               # Global styles
     └── App.css                 # Component-specific styles
+
+server/
+├── index.ts                   # Express server entry point (API routes + CORS)
+├── router.ts                  # REST API route definitions for decks & cards
+├── storage.ts                 # File-backed JSON persistence helper
+├── data/
+│   └── db.json                # Runtime storage (created automatically)
+└── tsconfig.json              # TypeScript config for server code
 ```
 
 ### Architecture Notes
@@ -214,30 +222,21 @@ The backend creates `server/data/db.json` automatically on the first write. If t
 
 > **Note:** The frontend will load but all deck operations will fail with network errors if the backend is not running.
 
-### Feature Verification
+## Features
 
-| Feature | Status | Notes |
-|---------|--------|-------|
-| Hook exposes `loading` / `error` | ✅ | `useFlashcards` returns `loading: boolean` and `error: string \| null` |
-| Persistence service in `src/services/api.ts` | ✅ | All backend calls go through this module |
-| Backend config in separate file | ✅ | `src/services/api-config.ts` contains `API_CONFIG` |
-| Components / hooks don't import external services | ✅ | Only via service module — no Firebase / Supabase |
-| All pages linked via navigation | ✅ | NavBar provides links; React Router handles routing |
-| Home / Dashboard page exists | ✅ | HomePage with deck list and stats |
-| Pages reachable via React Router links | ✅ | No manual URL entry required |
-| Service module has business logic + persistence | ⚠️ | Persistence in `services/`, business logic in `utils/` and store |
-| Auth service | N/A | No authentication required |
-| Login page | N/A | No auth |
-| Logout button | N/A | No auth |
-| Protected routes | N/A | No auth |
-| Auth session persistence | N/A | No auth |
-| AI agent instructions in project root | ✅ | `.github/copilot-instructions.md` |
-| High-level components follow single abstraction | ✅ | Pages compose reusable components |
-| Data survives page reload | ✅ | Persisted to `server/data/db.json` via Express |
-| Loading / error states visible in UI | ✅ | `ErrorBanner` component; `loading` flags in store |
-| `tsc --noEmit` passes | ✅ | Zero errors |
-| App runs without crashes | ✅ | `npm run dev` + `npm run server` |
-| README updated with backend / auth / run info | ✅ | This section |
+FlashFlow provides a comprehensive flashcard study experience with the following capabilities:
+
+- **Deck Management**: Create, edit, and delete flashcard decks to organize your study material by topic or subject
+- **Card Creation**: Add new flashcards to decks with front/back content, tags, and automatic SRS initialization
+- **Card Editing**: Modify existing cards, update content, add/remove tags, or reset SRS progress
+- **Spaced Repetition Study**: Review cards using the SM-2 algorithm that optimizes review timing based on your performance
+- **Rating System**: Rate each card during study (Again, Hard, Good, Easy) to adjust future review intervals
+- **Progress Tracking**: Monitor your learning progress with deck statistics showing total, new, learning, and mastered cards
+- **Study Sessions**: Start focused study sessions for specific decks, reviewing only cards due for review
+- **Session Statistics**: View detailed session summaries including cards reviewed, ratings given, and time spent
+- **Data Persistence**: All data is automatically saved to a local file and survives page reloads and app restarts
+- **Responsive Design**: Clean, distraction-free interface optimized for efficient study sessions
+- **Local Operation**: No internet connection required - runs entirely on your local machine with no user accounts
 
 ## Hook Operations
 

@@ -24,6 +24,7 @@ All network operations are abstracted through a typed service layer in `src/serv
 - `src/utils/storage.ts` — localStorage helpers used by persist middleware
 - `src/pages/` — page components; always consume state via `useFlashcardsContext()`
 - `src/components/` — reusable UI components composed by pages
+- `server/` — local Express backend used for persistence; includes API routes, storage helper, and file-backed data store
 
 ## Data Flow
 All state changes follow this strict pipeline:
