@@ -23,7 +23,11 @@ All network operations are abstracted through a typed service layer in `src/serv
 - `src/utils/srs.ts` — pure SM-2 logic, zero React dependencies, independently testable
 - `src/utils/storage.ts` — localStorage helpers used by persist middleware
 - `src/pages/` — page components; always consume state via `useFlashcardsContext()`
-- `src/components/` — reusable UI components composed by pages
+- `src/components/` — reusable UI components organized by feature:
+  - `common/` — shared components (DeleteButton, ErrorBanner, NavBar, PageTitle, Subtitle)
+  - `deck/` — deck management (DeckCreateForm, DeckList, DeckListItem, DeckStats)
+  - `card/` — card management (CardCreateForm, CardFlip, CardList, CardListItem)
+  - `study/` — study sessions (RatingButtons, SessionSummary, StatsCard, StudyHeader, StudyIntro, StudySession)
 - `server/` — local Express backend used for persistence; includes API routes, storage helper, and file-backed data store
 
 ## Data Flow

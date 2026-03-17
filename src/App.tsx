@@ -3,9 +3,12 @@ import './App.css'
 import HomePage from './pages/HomePage'
 import DeckDetailPage from './pages/DeckDetailPage'
 import StudyPage from './pages/StudyPage'
-import ErrorBanner from './components/ErrorBanner'
+import ErrorBanner from './components/common/ErrorBanner'
+import { useFlashcardsContext } from './context/FlashcardsContext'
 
 function App() {
+  const { error, setError } = useFlashcardsContext();
+
   return (
     <div className="app">
       <nav className="top-nav">
@@ -15,7 +18,7 @@ function App() {
       </nav>
 
       <main className="main-content">
-        <ErrorBanner />
+        <ErrorBanner error={error} onDismiss={() => setError(null)} />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/decks/:deckId" element={<DeckDetailPage />} />

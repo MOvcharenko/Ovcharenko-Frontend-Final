@@ -114,18 +114,32 @@ src/
 │   └── useFlashcards.test.ts   # Unit tests for hook (20 tests covering all operations)
 │
 ├── components/
-│   ├── DeckList.tsx            # Renders list of decks with optional delete
-│   ├── DeckStats.tsx           # Shows deck statistics (total, new, learning, mastered)
-│   ├── CardList.tsx            # Renders list of cards in a deck
-│   ├── CardFlip.tsx            # Flip animation and interaction for card review
-│   ├── RatingButtons.tsx       # Four rating buttons (Again, Hard, Good, Easy)
-│   ├── StatsCard.tsx           # Single stat display card
-│   ├── SessionSummary.tsx      # End-of-session stats and navigation
-│   ├── StudyIntro.tsx          # Pre-session screen showing card count
-│   ├── StudyHeader.tsx         # Progress indicator (e.g., "Card 1 of 5")
-│   ├── NavBar.tsx              # Top navigation with FlashFlow branding
-│   ├── PageTitle.tsx           # Page heading abstraction
-│   └── Subtitle.tsx            # Secondary heading abstraction
+│   ├── common/                 # Shared UI components
+│   │   ├── DeleteButton.tsx    # Reusable delete button
+│   │   ├── ErrorBanner.tsx     # Global error display
+│   │   ├── NavBar.tsx          # Top navigation
+│   │   ├── PageTitle.tsx       # Page heading abstraction
+│   │   └── Subtitle.tsx        # Secondary heading abstraction
+│   │
+│   ├── deck/                   # Deck-related components
+│   │   ├── DeckCreateForm.tsx  # Form for creating new decks
+│   │   ├── DeckList.tsx        # Renders list of decks
+│   │   ├── DeckListItem.tsx    # Individual deck item
+│   │   └── DeckStats.tsx       # Deck statistics display
+│   │
+│   ├── card/                   # Card-related components
+│   │   ├── CardCreateForm.tsx  # Form for creating new cards
+│   │   ├── CardFlip.tsx        # Flip animation for card review
+│   │   ├── CardList.tsx        # Renders list of cards
+│   │   └── CardListItem.tsx    # Individual card item
+│   │
+│   └── study/                  # Study session components
+│       ├── RatingButtons.tsx   # Rating buttons for card review
+│       ├── SessionSummary.tsx  # End-of-session statistics
+│       ├── StatsCard.tsx       # Single statistic display card
+│       ├── StudyHeader.tsx     # Session progress indicator
+│       ├── StudyIntro.tsx      # Pre-session information
+│       └── StudySession.tsx    # Main study session component
 │
 ├── pages/
 │   ├── HomePage.tsx            # Deck list, stats, create deck button

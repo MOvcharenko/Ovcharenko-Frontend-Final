@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Card } from '../types';
+import CardListItem from './CardListItem';
 
 interface CardListProps {
   cards: Card[];
@@ -15,16 +16,7 @@ function CardList({ cards, onDelete, showDue = false }: CardListProps) {
   return (
     <div className="cards">
       {cards.map((card) => (
-        <div key={card.id} className={`card card-${card.status}`}>
-          <div className="card-front">
-            <strong>Q:</strong> {card.front}
-          </div>
-          <div className="card-back">
-            <strong>A:</strong> {card.back}
-          </div>
-          {showDue && <small>Due: {card.dueDate.slice(0, 10)}</small>}
-          {onDelete && <button onClick={() => onDelete(card.id)}>Delete</button>}
-        </div>
+        <CardListItem key={card.id} card={card} onDelete={onDelete} showDue={showDue} />
       ))}
     </div>
   );

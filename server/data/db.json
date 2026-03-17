@@ -20,6 +20,27 @@
           "lastReviewedAt": null
         }
       ]
+    },
+    {
+      "id": "9e2b1672-234a-46a5-9b94-25f46e0e7dfb",
+      "title": "Second Deck",
+      "description": "It's the second deck created.",
+      "createdAt": "2026-03-17T09:40:17.207Z",
+      "cards": [
+        {
+          "id": "338d5bb3-1108-4dd5-9ed6-6b10413c3f50",
+          "deckId": "9e2b1672-234a-46a5-9b94-25f46e0e7dfb",
+          "front": "Question 1",
+          "back": "Question 2",
+          "tags": [],
+          "status": "new",
+          "interval": 1,
+          "easeFactor": 2.5,
+          "dueDate": "2026-03-17T09:40:34.440Z",
+          "createdAt": "2026-03-17T09:40:34.440Z",
+          "lastReviewedAt": null
+        }
+      ]
     }
   ],
   "activeSession": null

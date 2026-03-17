@@ -1,10 +1,11 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useFlashcardsContext } from '../context/FlashcardsContext';
-import DeckStats from '../components/DeckStats';
-import CardList from '../components/CardList';
-import PageTitle from '../components/PageTitle';
-import Subtitle from '../components/Subtitle';
+import DeckStats from '../components/deck/DeckStats';
+import CardList from '../components/card/CardList';
+import CardCreateForm from '../components/card/CardCreateForm';
+import PageTitle from '../components/common/PageTitle';
+import Subtitle from '../components/common/Subtitle';
 
 function DeckDetailPage() {
   const { deckId } = useParams<{ deckId: string }>();
@@ -18,13 +19,9 @@ function DeckDetailPage() {
 
   const stats = getDeckStats(deck.id);
 
-  function handleAddCard() {
+  function handleCreateCard(front: string, back: string) {
     if (!deck) return;
-    const front = prompt('Card front (question):');
-    if (!front?.trim()) return;
-    const back = prompt('Card back (answer):');
-    if (!back?.trim()) return;
-    addCard(deck.id, front.trim(), back.trim());
+    addCard(deck.id, front, back);
   }
 
   return (
@@ -45,7 +42,7 @@ function DeckDetailPage() {
 
       <section className="cards-list">
         <h2>Cards</h2>
-        <button onClick={handleAddCard}>+ Add Card</button>
+        <CardCreateForm onCreate={handleCreateCard} />
         <button onClick={() => resetDeck(deck.id)}>Reset Deck Progress</button>
 
         <CardList

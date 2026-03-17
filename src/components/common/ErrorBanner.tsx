@@ -1,8 +1,9 @@
-import { useFlashcardsContext } from '../context/FlashcardsContext';
+interface ErrorBannerProps {
+  error: string | null;
+  onDismiss: () => void;
+}
 
-export default function ErrorBanner() {
-  const { error, setError } = useFlashcardsContext();
-
+export default function ErrorBanner({ error, onDismiss }: ErrorBannerProps) {
   if (!error) return null;
 
   return (
@@ -10,7 +11,7 @@ export default function ErrorBanner() {
       <span>{error}</span>
       <button
         className="error-dismiss"
-        onClick={() => setError(null)}
+        onClick={onDismiss}
         aria-label="Dismiss error"
       >
         ×

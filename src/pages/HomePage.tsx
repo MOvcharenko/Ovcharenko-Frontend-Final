@@ -1,20 +1,18 @@
 import React from 'react';
 import { useFlashcardsContext } from '../context/FlashcardsContext';
-import DeckList from '../components/DeckList';
-import StatsCard from '../components/StatsCard';
-import PageTitle from '../components/PageTitle';
-import Subtitle from '../components/Subtitle';
+import DeckList from '../components/deck/DeckList';
+import DeckCreateForm from '../components/deck/DeckCreateForm';
+import StatsCard from '../components/study/StatsCard';
+import PageTitle from '../components/common/PageTitle';
+import Subtitle from '../components/common/Subtitle';
 
 function HomePage() {
   const { state, addDeck, deleteDeck, getCardsDueToday } = useFlashcardsContext();
 
   const cardsDueToday = getCardsDueToday().length;
 
-  function handleCreateDeck() {
-    const title = prompt('Deck title:');
-    if (!title?.trim()) return;
-    const description = prompt('Deck description:') ?? '';
-    addDeck(title.trim(), description.trim());
+  function handleCreateDeck(title: string, description: string) {
+    addDeck(title, description);
   }
 
   return (
@@ -33,7 +31,7 @@ function HomePage() {
       </section>
 
       <section className="action-section">
-        <button onClick={handleCreateDeck}>+ Create New Deck</button>
+        <DeckCreateForm onCreate={handleCreateDeck} />
       </section>
     </div>
   );
