@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Deck } from '../types';
+import type { Deck } from '../../types';
 import { Link } from 'react-router-dom';
 import DeleteButton from '../common/DeleteButton';
 
