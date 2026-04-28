@@ -22,8 +22,9 @@ async function request<T>(
     }
     const json = (await res.json()) as ApiResponse<T>;
     return json;
-  } catch (err: any) {
-    return { data: null, error: err.message || 'Network error' };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    return { data: null, error: message || 'Network error' };
   }
 }
 
