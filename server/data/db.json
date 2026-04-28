@@ -41,6 +41,309 @@
           "lastReviewedAt": null
         }
       ]
+    },
+    {
+      "id": "f5ec9302-5010-457f-b594-493aee93da39",
+      "title": "Backend Deck",
+      "description": "",
+      "createdAt": "2026-04-28T07:07:27.840Z",
+      "cards": []
+    },
+    {
+      "id": "1c96ebfb-1d45-41ad-8db8-1449eff13d72",
+      "title": "Spanish Vocab",
+      "description": "Common Spanish words",
+      "createdAt": "2026-04-28T07:07:27.877Z",
+      "cards": []
+    },
+    {
+      "id": "f0e96e4a-3b1c-4466-9de5-20d8bb74a308",
+      "title": "New Title",
+      "description": "desc",
+      "createdAt": "2026-04-28T07:07:27.897Z",
+      "cards": []
+    },
+    {
+      "id": "7730e302-5c88-4fda-8a8e-7f405781a379",
+      "title": "Other Deck",
+      "description": "desc",
+      "createdAt": "2026-04-28T07:07:27.904Z",
+      "cards": []
+    },
+    {
+      "id": "26389dab-998d-45fe-902a-c092d8aa8ce4",
+      "title": "Deck A",
+      "description": "",
+      "createdAt": "2026-04-28T07:07:27.915Z",
+      "cards": [
+        {
+          "id": "98f0f18e-bc6a-4c44-86cc-5c422765113f",
+          "deckId": "26389dab-998d-45fe-902a-c092d8aa8ce4",
+          "front": "What is 2+2?",
+          "back": "4",
+          "tags": [],
+          "status": "new",
+          "interval": 1,
+          "easeFactor": 2.5,
+          "dueDate": "2026-04-28T07:07:27.922Z",
+          "createdAt": "2026-04-28T07:07:27.922Z",
+          "lastReviewedAt": null
+        }
+      ]
+    },
+    {
+      "id": "b543bad0-4ef3-4131-88cb-56e21edcb3f3",
+      "title": "Deck",
+      "description": "",
+      "createdAt": "2026-04-28T07:07:27.928Z",
+      "cards": []
+    },
+    {
+      "id": "e2a88b5e-b654-4ed0-ae74-2cee87631eb5",
+      "title": "Deck",
+      "description": "",
+      "createdAt": "2026-04-28T07:07:27.941Z",
+      "cards": [
+        {
+          "id": "3e6e2285-7500-4f53-9d2e-0a26c4c20ca1",
+          "deckId": "e2a88b5e-b654-4ed0-ae74-2cee87631eb5",
+          "front": "New front",
+          "back": "New back",
+          "tags": [],
+          "status": "new",
+          "interval": 1,
+          "easeFactor": 2.5,
+          "dueDate": "2026-04-28T07:07:27.945Z",
+          "createdAt": "2026-04-28T07:07:27.945Z",
+          "lastReviewedAt": null
+        }
+      ]
+    },
+    {
+      "id": "cefbc11f-c7c6-47c1-818f-5adb23854163",
+      "title": "Deck",
+      "description": "",
+      "createdAt": "2026-04-28T07:07:27.954Z",
+      "cards": [
+        {
+          "id": "96e1590a-9fec-499c-b584-cb027940b402",
+          "deckId": "cefbc11f-c7c6-47c1-818f-5adb23854163",
+          "front": "Q",
+          "back": "A",
+          "tags": [],
+          "status": "new",
+          "interval": 1,
+          "easeFactor": 2.5,
+          "dueDate": "2026-04-28T07:07:27.966Z",
+          "createdAt": "2026-04-28T07:07:27.958Z",
+          "lastReviewedAt": null
+        }
+      ]
+    },
+    {
+      "id": "5b865788-9255-4fa2-9e3a-d6adc8bb4d93",
+      "title": "Deck",
+      "description": "",
+      "createdAt": "2026-04-28T07:07:27.971Z",
+      "cards": [
+        {
+          "id": "64783abe-4fa7-4449-bb55-029c8b7ef23d",
+          "deckId": "5b865788-9255-4fa2-9e3a-d6adc8bb4d93",
+          "front": "Q1",
+          "back": "A1",
+          "tags": [],
+          "status": "new",
+          "interval": 1,
+          "easeFactor": 2.5,
+          "dueDate": "2026-04-28T07:07:27.974Z",
+          "createdAt": "2026-04-28T07:07:27.974Z",
+          "lastReviewedAt": null
+        },
+        {
+          "id": "db582017-f724-4466-ba8d-9f6816e2234a",
+          "deckId": "5b865788-9255-4fa2-9e3a-d6adc8bb4d93",
+          "front": "Q2",
+          "back": "A2",
+          "tags": [],
+          "status": "new",
+          "interval": 1,
+          "easeFactor": 2.5,
+          "dueDate": "2026-04-28T07:07:27.977Z",
+          "createdAt": "2026-04-28T07:07:27.977Z",
+          "lastReviewedAt": null
+        }
+      ]
+    },
+    {
+      "id": "f62847b5-c41f-4ace-911a-fd688b3877cd",
+      "title": "Deck",
+      "description": "",
+      "createdAt": "2026-04-28T07:07:27.982Z",
+      "cards": []
+    },
+    {
+      "id": "44aef091-2057-41b0-b105-1adc0ec598ab",
+      "title": "Deck",
+      "description": "",
+      "createdAt": "2026-04-28T07:07:27.987Z",
+      "cards": [
+        {
+          "id": "ddc835f7-af77-4183-807a-6911845e2985",
+          "deckId": "44aef091-2057-41b0-b105-1adc0ec598ab",
+          "front": "Q",
+          "back": "A",
+          "tags": [],
+          "status": "review",
+          "interval": 3,
+          "easeFactor": 2.5,
+          "dueDate": "2026-05-01T07:07:27.994Z",
+          "createdAt": "2026-04-28T07:07:27.990Z",
+          "lastReviewedAt": "2026-04-28T07:07:27.994Z"
+        }
+      ]
+    },
+    {
+      "id": "ec7783a0-eae8-4dbc-beb8-6b1dfd918e3f",
+      "title": "Deck",
+      "description": "",
+      "createdAt": "2026-04-28T07:07:27.999Z",
+      "cards": []
+    },
+    {
+      "id": "5c2d7b52-859c-40ac-ac43-bcf709699ea6",
+      "title": "Deck",
+      "description": "",
+      "createdAt": "2026-04-28T07:07:28.004Z",
+      "cards": [
+        {
+          "id": "dcbb9031-6ef5-4afc-a71b-a4d63d2a244f",
+          "deckId": "5c2d7b52-859c-40ac-ac43-bcf709699ea6",
+          "front": "Q1",
+          "back": "A1",
+          "tags": [],
+          "status": "mastered",
+          "interval": 3,
+          "easeFactor": 2.65,
+          "dueDate": "2026-05-01T07:07:28.017Z",
+          "createdAt": "2026-04-28T07:07:28.007Z",
+          "lastReviewedAt": "2026-04-28T07:07:28.017Z"
+        },
+        {
+          "id": "cefc6ba2-3d87-45b5-88f8-d11296c068be",
+          "deckId": "5c2d7b52-859c-40ac-ac43-bcf709699ea6",
+          "front": "Q2",
+          "back": "A2",
+          "tags": [],
+          "status": "review",
+          "interval": 3,
+          "easeFactor": 2.5,
+          "dueDate": "2026-05-01T07:07:28.020Z",
+          "createdAt": "2026-04-28T07:07:28.010Z",
+          "lastReviewedAt": "2026-04-28T07:07:28.020Z"
+        },
+        {
+          "id": "6a47a423-da9e-4f99-bee6-26b073732dac",
+          "deckId": "5c2d7b52-859c-40ac-ac43-bcf709699ea6",
+          "front": "Q3",
+          "back": "A3",
+          "tags": [],
+          "status": "learning",
+          "interval": 1,
+          "easeFactor": 2.3,
+          "dueDate": "2026-04-29T07:07:28.023Z",
+          "createdAt": "2026-04-28T07:07:28.013Z",
+          "lastReviewedAt": "2026-04-28T07:07:28.023Z"
+        }
+      ]
+    },
+    {
+      "id": "9f6ca340-1d75-4f4c-a3af-ce402ef365ef",
+      "title": "Deck",
+      "description": "",
+      "createdAt": "2026-04-28T07:07:28.029Z",
+      "cards": [
+        {
+          "id": "47ed5e0b-dafb-47cf-933d-d1e90e9bc556",
+          "deckId": "9f6ca340-1d75-4f4c-a3af-ce402ef365ef",
+          "front": "Q1",
+          "back": "A1",
+          "tags": [],
+          "status": "new",
+          "interval": 1,
+          "easeFactor": 2.5,
+          "dueDate": "2026-04-28T07:07:28.032Z",
+          "createdAt": "2026-04-28T07:07:28.032Z",
+          "lastReviewedAt": null
+        },
+        {
+          "id": "f8babe88-b047-4043-85b7-a75026d43c76",
+          "deckId": "9f6ca340-1d75-4f4c-a3af-ce402ef365ef",
+          "front": "Q2",
+          "back": "A2",
+          "tags": [],
+          "status": "mastered",
+          "interval": 3,
+          "easeFactor": 2.65,
+          "dueDate": "2026-05-01T07:07:28.039Z",
+          "createdAt": "2026-04-28T07:07:28.036Z",
+          "lastReviewedAt": "2026-04-28T07:07:28.039Z"
+        }
+      ]
+    },
+    {
+      "id": "d4526a5c-8197-4b92-a347-5606e9ba8e32",
+      "title": "Deck",
+      "description": "",
+      "createdAt": "2026-04-28T07:07:28.043Z",
+      "cards": [
+        {
+          "id": "0c6292b9-03c7-47b9-8bda-130f8fd5ef2f",
+          "deckId": "d4526a5c-8197-4b92-a347-5606e9ba8e32",
+          "front": "Q1",
+          "back": "A1",
+          "tags": [],
+          "status": "mastered",
+          "interval": 3,
+          "easeFactor": 2.65,
+          "dueDate": "2026-05-01T07:07:28.054Z",
+          "createdAt": "2026-04-28T07:07:28.047Z",
+          "lastReviewedAt": "2026-04-28T07:07:28.054Z"
+        },
+        {
+          "id": "e909e143-fc17-4e32-8ca8-af66733c3ddb",
+          "deckId": "d4526a5c-8197-4b92-a347-5606e9ba8e32",
+          "front": "Q2",
+          "back": "A2",
+          "tags": [],
+          "status": "new",
+          "interval": 1,
+          "easeFactor": 2.5,
+          "dueDate": "2026-04-28T07:07:28.049Z",
+          "createdAt": "2026-04-28T07:07:28.049Z",
+          "lastReviewedAt": null
+        }
+      ]
+    },
+    {
+      "id": "a6033a18-505a-4b1c-9618-5d156d0199f9",
+      "title": "Deck",
+      "description": "",
+      "createdAt": "2026-04-28T07:07:28.066Z",
+      "cards": [
+        {
+          "id": "ba0f1b2e-ea26-413e-ac9b-0faeca79b7f6",
+          "deckId": "a6033a18-505a-4b1c-9618-5d156d0199f9",
+          "front": "Q",
+          "back": "A",
+          "tags": [],
+          "status": "new",
+          "interval": 1,
+          "easeFactor": 2.5,
+          "dueDate": "2026-04-28T07:07:28.070Z",
+          "createdAt": "2026-04-28T07:07:28.070Z",
+          "lastReviewedAt": null
+        }
+      ]
     }
   ],
   "activeSession": null

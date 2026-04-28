@@ -1,32 +1,52 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useFlashcards } from './useFlashcards';
+import { useFlashcards } from '../hooks/useFlashcards';
 import type { AppState } from '../types';
 import { useFlashcardsStore, DEFAULT_STATE } from '../store/flashcardsStore';
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// Mock the API service
+vi.mock('../services/api', () => ({
+  api: {
+    fetchDecks: vi.fn(),
+    createDeck: vi.fn(),
+    updateDeck: vi.fn(),
+    deleteDeck: vi.fn(),
+    createCard: vi.fn(),
+    updateCard: vi.fn(),
+    deleteCard: vi.fn(),
+    rateCard: vi.fn(),
+    resetCard: vi.fn(),
+  },
+}));
 
-import { resetApiStub } from '../services/api';
+import { api } from '../services/api';
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
 
 beforeEach(() => {
   // reset global store state before each test
   useFlashcardsStore.setState(DEFAULT_STATE);
-  // clear stubbed backend state when running tests
-  if (typeof resetApiStub === 'function') {
-    resetApiStub();
-  }
+  // reset all mocks
+  vi.clearAllMocks();
 });
 
 it('loads decks from backend via loadDecks', async () => {
-  const { result } = freshHook();
+  const mockDeck = {
+    id: 'test-deck-id',
+    title: 'Backend Deck',
+    description: '',
+    createdAt: new Date().toISOString(),
+    cards: [],
+  };
 
-  // create a deck in the stubbed backend
-  await act(async () => {
-    await result.current.addDeck('Backend Deck', '');
+  // Mock the API to return the deck
+  vi.mocked(api.fetchDecks).mockResolvedValue({
+    data: [mockDeck],
+    error: null,
   });
 
-  // reset local store to empty and then reload from backend
-  useFlashcardsStore.setState(DEFAULT_STATE);
+  const { result } = freshHook();
+
   await act(async () => {
     await result.current.loadDecks();
   });
@@ -49,6 +69,19 @@ describe('useFlashcards — deck operations', () => {
   });
 
   it('adds a deck with the correct title and description', async () => {
+    const mockDeck = {
+      id: 'test-deck-id',
+      title: 'Spanish Vocab',
+      description: 'Common Spanish words',
+      createdAt: new Date().toISOString(),
+      cards: [],
+    };
+
+    vi.mocked(api.createDeck).mockResolvedValue({
+      data: mockDeck,
+      error: null,
+    });
+
     const { result } = freshHook();
 
     await act(async () => {
@@ -62,6 +95,23 @@ describe('useFlashcards — deck operations', () => {
   });
 
   it('deletes a deck by id', async () => {
+    const mockDeck = {
+      id: 'test-deck-id',
+      title: 'To Delete',
+      description: '',
+      createdAt: new Date().toISOString(),
+      cards: [],
+    };
+
+    vi.mocked(api.createDeck).mockResolvedValue({
+      data: mockDeck,
+      error: null,
+    });
+    vi.mocked(api.deleteDeck).mockResolvedValue({
+      data: null,
+      error: null,
+    });
+
     const { result } = freshHook();
 
     await act(async () => {
@@ -78,6 +128,41 @@ describe('useFlashcards — deck operations', () => {
   });
 
   it('updates a deck title without affecting other decks', async () => {
+    const mockDeck1 = {
+      id: 'test-deck-id-1',
+      title: 'Original Title',
+      description: 'desc',
+      createdAt: new Date().toISOString(),
+      cards: [],
+    };
+
+    const mockDeck2 = {
+      id: 'test-deck-id-2',
+      title: 'Other Deck',
+      description: 'desc',
+      createdAt: new Date().toISOString(),
+      cards: [],
+    };
+
+    const updatedDeck = {
+      ...mockDeck1,
+      title: 'New Title',
+    };
+
+    vi.mocked(api.createDeck)
+      .mockResolvedValueOnce({
+        data: mockDeck1,
+        error: null,
+      })
+      .mockResolvedValueOnce({
+        data: mockDeck2,
+        error: null,
+      });
+    vi.mocked(api.updateDeck).mockResolvedValue({
+      data: updatedDeck,
+      error: null,
+    });
+
     const { result } = freshHook();
 
     await act(async () => {
@@ -100,6 +185,38 @@ describe('useFlashcards — deck operations', () => {
 
 describe('useFlashcards — card operations', () => {
   it('adds a card to the correct deck with "new" status', async () => {
+    const mockDeck = {
+      id: 'test-deck-id',
+      title: 'Deck A',
+      description: '',
+      createdAt: new Date().toISOString(),
+      cards: [],
+    };
+
+    const mockCard = {
+      id: 'test-card-id',
+      front: 'What is 2+2?',
+      back: '4',
+      status: 'new' as const,
+      deckId: 'test-deck-id',
+      createdAt: new Date().toISOString(),
+      easeFactor: 2.5,
+      interval: 1,
+      repetitions: 0,
+      dueDate: new Date().toISOString(),
+      tags: [],
+      lastReviewedAt: null,
+    };
+
+    vi.mocked(api.createDeck).mockResolvedValue({
+      data: mockDeck,
+      error: null,
+    });
+    vi.mocked(api.createCard).mockResolvedValue({
+      data: mockCard,
+      error: null,
+    });
+
     const { result } = freshHook();
 
     await act(async () => {
@@ -120,6 +237,41 @@ describe('useFlashcards — card operations', () => {
   });
 
   it('deletes a card from a deck', async () => {
+    const mockDeck = {
+      id: 'test-deck-id',
+      title: 'Deck',
+      description: '',
+      createdAt: new Date().toISOString(),
+      cards: [],
+    };
+
+    const mockCard = {
+      id: 'test-card-id',
+      deckId: 'test-deck-id',
+      front: 'Q',
+      back: 'A',
+      tags: [],
+      status: 'new' as const,
+      interval: 1,
+      easeFactor: 2.5,
+      dueDate: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+      lastReviewedAt: null,
+    };
+
+    vi.mocked(api.createDeck).mockResolvedValue({
+      data: mockDeck,
+      error: null,
+    });
+    vi.mocked(api.createCard).mockResolvedValue({
+      data: mockCard,
+      error: null,
+    });
+    vi.mocked(api.deleteCard).mockResolvedValue({
+      data: null,
+      error: null,
+    });
+
     const { result } = freshHook();
 
     await act(async () => {
@@ -140,6 +292,48 @@ describe('useFlashcards — card operations', () => {
   });
 
   it('updates card front and back', async () => {
+    const mockDeck = {
+      id: 'test-deck-id',
+      title: 'Deck',
+      description: '',
+      createdAt: new Date().toISOString(),
+      cards: [],
+    };
+
+    const mockCard = {
+      id: 'test-card-id',
+      front: 'Old front',
+      back: 'Old back',
+      status: 'new' as const,
+      deckId: 'test-deck-id',
+      createdAt: new Date().toISOString(),
+      easeFactor: 2.5,
+      interval: 1,
+      repetitions: 0,
+      dueDate: new Date().toISOString(),
+      tags: [],
+      lastReviewedAt: null,
+    };
+
+    const updatedCard = {
+      ...mockCard,
+      front: 'New front',
+      back: 'New back',
+    };
+
+    vi.mocked(api.createDeck).mockResolvedValue({
+      data: mockDeck,
+      error: null,
+    });
+    vi.mocked(api.createCard).mockResolvedValue({
+      data: mockCard,
+      error: null,
+    });
+    vi.mocked(api.updateCard).mockResolvedValue({
+      data: updatedCard,
+      error: null,
+    });
+
     const { result } = freshHook();
 
     await act(async () => {
@@ -162,6 +356,66 @@ describe('useFlashcards — card operations', () => {
   });
 
   it('resets a single card back to "new" status with default SRS values', async () => {
+    const mockDeck = {
+      id: 'test-deck-id',
+      title: 'Deck',
+      description: '',
+      createdAt: new Date().toISOString(),
+      cards: [],
+    };
+
+    const mockCard = {
+      id: 'test-card-id',
+      front: 'Q',
+      back: 'A',
+      status: 'new' as const,
+      deckId: 'test-deck-id',
+      createdAt: new Date().toISOString(),
+      easeFactor: 2.5,
+      interval: 1,
+      repetitions: 0,
+      dueDate: new Date().toISOString(),
+      tags: [],
+      lastReviewedAt: null,
+    };
+
+    const ratedCard = {
+      ...mockCard,
+      status: 'mastered' as const,
+      easeFactor: 2.6,
+      interval: 6,
+      repetitions: 1,
+      lastReviewedAt: new Date().toISOString(),
+      dueDate: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toISOString(),
+    };
+
+    const resetCard = {
+      ...mockCard,
+      status: 'new' as const,
+      easeFactor: 2.5,
+      interval: 1,
+      repetitions: 0,
+      lastReviewedAt: null,
+      dueDate: new Date().toISOString(),
+    };
+
+    vi.mocked(api.createDeck).mockResolvedValue({
+      data: mockDeck,
+      error: null,
+    });
+    vi.mocked(api.createCard).mockResolvedValue({
+      data: mockCard,
+      error: null,
+    });
+    vi.mocked(api.rateCard).mockResolvedValue({
+      data: ratedCard,
+      error: null,
+    });
+    vi.mocked(api.resetCard).mockResolvedValue({
+      data: resetCard,
+      error: null,
+    });
+
     const { result } = freshHook();
 
     await act(async () => {
@@ -241,6 +495,52 @@ describe('useFlashcards — study session', () => {
   });
 
   it('records a card rating and updates the card SRS fields', async () => {
+    const mockDeck = {
+      id: 'test-deck-id',
+      title: 'Deck',
+      description: '',
+      createdAt: new Date().toISOString(),
+      cards: [],
+    };
+
+    const mockCard = {
+      id: 'test-card-id',
+      front: 'Q',
+      back: 'A',
+      status: 'new' as const,
+      deckId: 'test-deck-id',
+      createdAt: new Date().toISOString(),
+      easeFactor: 2.5,
+      interval: 1,
+      repetitions: 0,
+      dueDate: new Date().toISOString(),
+      tags: [],
+      lastReviewedAt: null,
+    };
+
+    const ratedCard = {
+      ...mockCard,
+      status: 'review' as const,
+      easeFactor: 2.5,
+      interval: 1,
+      repetitions: 1,
+      lastReviewedAt: new Date().toISOString(),
+      dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+    };
+
+    vi.mocked(api.createDeck).mockResolvedValue({
+      data: mockDeck,
+      error: null,
+    });
+    vi.mocked(api.createCard).mockResolvedValue({
+      data: mockCard,
+      error: null,
+    });
+    vi.mocked(api.rateCard).mockResolvedValue({
+      data: ratedCard,
+      error: null,
+    });
+
     const { result } = freshHook();
 
     await act(async () => {
@@ -284,6 +584,120 @@ describe('useFlashcards — study session', () => {
   });
 
   it('computes session stats correctly', async () => {
+    const mockDeck = {
+      id: 'test-deck-id',
+      title: 'Deck',
+      description: '',
+      createdAt: new Date().toISOString(),
+      cards: [],
+    };
+
+    const mockCard1 = {
+      id: 'test-card-id-1',
+      front: 'Q1',
+      back: 'A1',
+      status: 'new' as const,
+      deckId: 'test-deck-id',
+      createdAt: new Date().toISOString(),
+      easeFactor: 2.5,
+      interval: 1,
+      repetitions: 0,
+      dueDate: new Date().toISOString(),
+      tags: [],
+      lastReviewedAt: null,
+    };
+
+    const mockCard2 = {
+      id: 'test-card-id-2',
+      front: 'Q2',
+      back: 'A2',
+      status: 'new' as const,
+      deckId: 'test-deck-id',
+      createdAt: new Date().toISOString(),
+      easeFactor: 2.5,
+      interval: 1,
+      repetitions: 0,
+      dueDate: new Date().toISOString(),
+      tags: [],
+      lastReviewedAt: null,
+    };
+
+    const mockCard3 = {
+      id: 'test-card-id-3',
+      front: 'Q3',
+      back: 'A3',
+      status: 'new' as const,
+      deckId: 'test-deck-id',
+      createdAt: new Date().toISOString(),
+      easeFactor: 2.5,
+      interval: 1,
+      repetitions: 0,
+      dueDate: new Date().toISOString(),
+      tags: [],
+      lastReviewedAt: null,
+    };
+
+    const ratedCard1 = {
+      ...mockCard1,
+      status: 'mastered' as const,
+      easeFactor: 2.6,
+      interval: 6,
+      repetitions: 1,
+      lastReviewedAt: new Date().toISOString(),
+      dueDate: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toISOString(),
+    };
+
+    const ratedCard2 = {
+      ...mockCard2,
+      status: 'review' as const,
+      easeFactor: 2.5,
+      interval: 1,
+      repetitions: 1,
+      lastReviewedAt: new Date().toISOString(),
+      dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+    };
+
+    const ratedCard3 = {
+      ...mockCard3,
+      status: 'new' as const,
+      easeFactor: 2.3,
+      interval: 1,
+      repetitions: 0,
+      lastReviewedAt: new Date().toISOString(),
+      dueDate: new Date().toISOString(),
+    };
+
+    vi.mocked(api.createDeck).mockResolvedValue({
+      data: mockDeck,
+      error: null,
+    });
+    vi.mocked(api.createCard)
+      .mockResolvedValueOnce({
+        data: mockCard1,
+        error: null,
+      })
+      .mockResolvedValueOnce({
+        data: mockCard2,
+        error: null,
+      })
+      .mockResolvedValueOnce({
+        data: mockCard3,
+        error: null,
+      });
+    vi.mocked(api.rateCard)
+      .mockResolvedValueOnce({
+        data: ratedCard1,
+        error: null,
+      })
+      .mockResolvedValueOnce({
+        data: ratedCard2,
+        error: null,
+      })
+      .mockResolvedValueOnce({
+        data: ratedCard3,
+        error: null,
+      });
+
     const { result } = freshHook();
 
     await act(async () => {
@@ -328,6 +742,72 @@ describe('useFlashcards — derived queries', () => {
   });
 
   it('getDeckStats returns correct counts per status', async () => {
+    const mockDeck = {
+      id: 'test-deck-id',
+      title: 'Deck',
+      description: '',
+      createdAt: new Date().toISOString(),
+      cards: [],
+    };
+
+    const mockCard1 = {
+      id: 'test-card-id-1',
+      front: 'Q1',
+      back: 'A1',
+      status: 'new' as const,
+      deckId: 'test-deck-id',
+      createdAt: new Date().toISOString(),
+      easeFactor: 2.5,
+      interval: 1,
+      repetitions: 0,
+      dueDate: new Date().toISOString(),
+      tags: [],
+      lastReviewedAt: null,
+    };
+
+    const mockCard2 = {
+      id: 'test-card-id-2',
+      front: 'Q2',
+      back: 'A2',
+      status: 'new' as const,
+      deckId: 'test-deck-id',
+      createdAt: new Date().toISOString(),
+      easeFactor: 2.5,
+      interval: 1,
+      repetitions: 0,
+      dueDate: new Date().toISOString(),
+      tags: [],
+      lastReviewedAt: null,
+    };
+
+    const ratedCard2 = {
+      ...mockCard2,
+      status: 'mastered' as const,
+      easeFactor: 2.6,
+      interval: 6,
+      repetitions: 1,
+      lastReviewedAt: new Date().toISOString(),
+      dueDate: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toISOString(),
+    };
+
+    vi.mocked(api.createDeck).mockResolvedValue({
+      data: mockDeck,
+      error: null,
+    });
+    vi.mocked(api.createCard)
+      .mockResolvedValueOnce({
+        data: mockCard1,
+        error: null,
+      })
+      .mockResolvedValueOnce({
+        data: mockCard2,
+        error: null,
+      });
+    vi.mocked(api.rateCard).mockResolvedValue({
+      data: ratedCard2,
+      error: null,
+    });
+
     const { result } = freshHook();
 
     await act(async () => {
@@ -358,6 +838,72 @@ describe('useFlashcards — derived queries', () => {
   });
 
   it('getCardsDueToday returns only cards whose dueDate is now or past', async () => {
+    const mockDeck = {
+      id: 'test-deck-id',
+      title: 'Deck',
+      description: '',
+      createdAt: new Date().toISOString(),
+      cards: [],
+    };
+
+    const mockCard1 = {
+      id: 'test-card-id-1',
+      front: 'Q1',
+      back: 'A1',
+      status: 'new' as const,
+      deckId: 'test-deck-id',
+      createdAt: new Date().toISOString(),
+      easeFactor: 2.5,
+      interval: 1,
+      repetitions: 0,
+      dueDate: new Date().toISOString(),
+      tags: [],
+      lastReviewedAt: null,
+    };
+
+    const mockCard2 = {
+      id: 'test-card-id-2',
+      front: 'Q2',
+      back: 'A2',
+      status: 'new' as const,
+      deckId: 'test-deck-id',
+      createdAt: new Date().toISOString(),
+      easeFactor: 2.5,
+      interval: 1,
+      repetitions: 0,
+      dueDate: new Date().toISOString(),
+      tags: [],
+      lastReviewedAt: null,
+    };
+
+    const ratedCard1 = {
+      ...mockCard1,
+      status: 'mastered' as const,
+      easeFactor: 2.6,
+      interval: 6,
+      repetitions: 1,
+      lastReviewedAt: new Date().toISOString(),
+      dueDate: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toISOString(),
+    };
+
+    vi.mocked(api.createDeck).mockResolvedValue({
+      data: mockDeck,
+      error: null,
+    });
+    vi.mocked(api.createCard)
+      .mockResolvedValueOnce({
+        data: mockCard1,
+        error: null,
+      })
+      .mockResolvedValueOnce({
+        data: mockCard2,
+        error: null,
+      });
+    vi.mocked(api.rateCard).mockResolvedValue({
+      data: ratedCard1,
+      error: null,
+    });
+
     const { result } = freshHook();
 
     await act(async () => {
@@ -393,6 +939,23 @@ describe('useFlashcards — derived queries', () => {
 
 describe('useFlashcards — edge cases', () => {
   it('deleting a deck clears an active session for that deck', async () => {
+    const mockDeck = {
+      id: 'test-deck-id',
+      title: 'Deck',
+      description: '',
+      createdAt: new Date().toISOString(),
+      cards: [],
+    };
+
+    vi.mocked(api.createDeck).mockResolvedValue({
+      data: mockDeck,
+      error: null,
+    });
+    vi.mocked(api.deleteDeck).mockResolvedValue({
+      data: null,
+      error: null,
+    });
+
     const { result } = freshHook();
 
     await act(async () => {

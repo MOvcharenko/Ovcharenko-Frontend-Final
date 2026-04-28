@@ -1,15 +1,16 @@
 import { createContext, useContext, type ReactNode, useEffect, useMemo } from 'react';
-import { useFlashcards } from '../hooks/useFlashcards';
+import { useFlashcardsStore, type FlashcardsStore } from '../store/flashcardsStore';
 
-type FlashcardsContextType = ReturnType<typeof useFlashcards>;
+type FlashcardsContextType = FlashcardsStore;
 
 const FlashcardsContext = createContext<FlashcardsContextType | null>(null);
 
 export function FlashcardsProvider({ children }: { children: ReactNode }) {
-  const flashcards = useFlashcards();
+  const flashcards = useFlashcardsStore();
 
   const memoizedFlashcards = useMemo(() => flashcards, [
-    flashcards.state,
+    flashcards.decks,
+    flashcards.activeSession,
     flashcards.loading,
     flashcards.error,
     // actions are stable from store

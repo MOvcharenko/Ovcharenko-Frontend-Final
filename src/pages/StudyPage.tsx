@@ -6,12 +6,12 @@ import PageTitle from '../components/common/PageTitle';
 
 function StudyPage() {
   const { deckId } = useParams<{ deckId: string }>();
-  const { state, startSession, rateCard, endSession, getDeckById, getSessionStats, getCardsDueToday } =
+  const { activeSession, startSession, rateCard, endSession, getDeckById, getSessionStats, getCardsDueToday } =
     useFlashcardsContext();
 
   const deck = deckId ? getDeckById(deckId) : null;
   const dueCards = deckId ? getCardsDueToday(deckId) : [];
-  const session = state.activeSession;
+  const session = activeSession;
 
   if (!deck) return <p>Deck not found.</p>;
 

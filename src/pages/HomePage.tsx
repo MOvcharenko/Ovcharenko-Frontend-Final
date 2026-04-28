@@ -7,7 +7,7 @@ import PageTitle from '../components/common/PageTitle';
 import Subtitle from '../components/common/Subtitle';
 
 function HomePage() {
-  const { state, addDeck, deleteDeck, getCardsDueToday } = useFlashcardsContext();
+  const { decks, addDeck, deleteDeck, getCardsDueToday } = useFlashcardsContext();
 
   const cardsDueToday = getCardsDueToday().length;
 
@@ -22,12 +22,12 @@ function HomePage() {
 
       <section className="stats">
         <StatsCard label="Cards Due Today" value={cardsDueToday} />
-        <StatsCard label="Total Decks" value={state.decks.length} />
+        <StatsCard label="Total Decks" value={decks.length} />
       </section>
 
       <section className="decks-section">
         <h2>Your Decks</h2>
-        <DeckList decks={state.decks} onDelete={deleteDeck} />
+        <DeckList decks={decks} onDelete={deleteDeck} />
       </section>
 
       <section className="action-section">
