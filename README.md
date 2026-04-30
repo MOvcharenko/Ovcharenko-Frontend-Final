@@ -234,7 +234,7 @@ npm run server    # starts Express on http://localhost:3001
 
 The backend creates `server/data/db.json` automatically on the first write. If the file does not exist yet, all read operations return empty defaults — no manual setup required.
 
-> **Note:** The frontend will load but all deck operations will fail with network errors if the backend is not running.
+> **Note:** The frontend uses `/api` by default during development and requires the backend to be started separately with `npm run server`. If the backend is not running, network requests will fail with `Failed to fetch`.
 
 ## Features
 
