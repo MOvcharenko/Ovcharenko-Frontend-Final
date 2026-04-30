@@ -10,7 +10,13 @@ interface CardListProps {
 
 function CardList({ cards, onDelete, showDue = false }: CardListProps) {
   if (cards.length === 0) {
-    return <p>No cards yet — add one above!</p>;
+    return (
+      <div className="empty-state">
+        <div className="empty-state-icon">🃏</div>
+        <div className="empty-state-title">No cards yet</div>
+        <div className="empty-state-description">Add your first card above to get started!</div>
+      </div>
+    );
   }
 
   return (

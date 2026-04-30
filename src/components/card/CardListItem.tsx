@@ -10,7 +10,7 @@ interface CardListItemProps {
 
 function CardListItem({ card, onDelete, showDue }: CardListItemProps) {
   return (
-    <div className={`card card-${card.status}`}> 
+    <div className={`card card-${card.status}`}>
       <div className="card-front">
         <strong>Q:</strong> {card.front}
       </div>

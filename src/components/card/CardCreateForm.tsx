@@ -17,26 +17,34 @@ export default function CardCreateForm({ onCreate }: CardCreateFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Front (question):
-        <input
-          type="text"
-          value={front}
-          onChange={(e) => setFront(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Back (answer):
-        <input
-          type="text"
-          value={back}
-          onChange={(e) => setBack(e.target.value)}
-          required
-        />
-      </label>
-      <button type="submit">+ Add Card</button>
+    <form className="form" onSubmit={handleSubmit}>
+      <div className="form-group">
+        <label className="form-label">
+          Front (question):
+          <input
+            className="form-input"
+            type="text"
+            value={front}
+            onChange={(e) => setFront(e.target.value)}
+            required
+          />
+        </label>
+      </div>
+      <div className="form-group">
+        <label className="form-label">
+          Back (answer):
+          <input
+            className="form-input"
+            type="text"
+            value={back}
+            onChange={(e) => setBack(e.target.value)}
+            required
+          />
+        </label>
+      </div>
+      <div className="form-actions">
+        <button className="btn btn-primary" type="submit">+ Add Card</button>
+      </div>
     </form>
   );
 }

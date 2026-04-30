@@ -17,25 +17,33 @@ export default function DeckCreateForm({ onCreate }: DeckCreateFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Title:
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Description:
-        <input
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </label>
-      <button type="submit">+ Create New Deck</button>
+    <form className="form" onSubmit={handleSubmit}>
+      <div className="form-group">
+        <label className="form-label">
+          Title:
+          <input
+            className="form-input"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </label>
+      </div>
+      <div className="form-group">
+        <label className="form-label">
+          Description:
+          <input
+            className="form-input"
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </label>
+      </div>
+      <div className="form-actions">
+        <button className="btn btn-primary" type="submit">+ Create New Deck</button>
+      </div>
     </form>
   );
 }

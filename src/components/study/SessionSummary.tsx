@@ -16,7 +16,7 @@ export default function SessionSummary({ deckId, total, correct, incorrect, accu
       <p>Correct (good/easy): {correct}</p>
       <p>Incorrect (hard/again): {incorrect}</p>
       <p>Accuracy: {accuracy}%</p>
-      <Link to={`/decks/${deckId}`}>Back to Deck</Link>
+      <Link className="btn btn-primary" to={`/decks/${deckId}`}>Back to Deck</Link>
     </div>
   );
 }

@@ -9,7 +9,13 @@ interface DeckListProps {
 
 function DeckList({ decks, onDelete }: DeckListProps) {
   if (decks.length === 0) {
-    return <p>No decks yet — create one below!</p>;
+    return (
+      <div className="empty-state">
+        <div className="empty-state-icon">📚</div>
+        <div className="empty-state-title">No decks yet</div>
+        <div className="empty-state-description">Create your first deck below to get started!</div>
+      </div>
+    );
   }
 
   return (

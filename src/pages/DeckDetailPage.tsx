@@ -43,7 +43,9 @@ function DeckDetailPage() {
       <section className="cards-list">
         <h2>Cards</h2>
         <CardCreateForm onCreate={handleCreateCard} />
-        <button onClick={() => resetDeck(deck.id)}>Reset Deck Progress</button>
+        <div className="form-actions">
+          <button className="btn btn-secondary" onClick={() => resetDeck(deck.id)}>Reset Deck Progress</button>
+        </div>
 
         <CardList
           cards={deck.cards}

@@ -15,10 +15,10 @@ export default function StudyIntro({ deckTitle, dueCount, onStart, deckId }: Stu
       {dueCount === 0 ? (
         <>
           <p>No cards due — come back later!</p>
-          <Link to={`/decks/${deckId}`}>Back to Deck</Link>
+          <Link className="btn btn-outline" to={`/decks/${deckId}`}>Back to Deck</Link>
         </>
       ) : (
-        <button onClick={onStart}>Start Session</button>
+        <button className="btn btn-primary" onClick={onStart}>Start Session</button>
       )}
     </div>
   );
