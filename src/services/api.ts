@@ -1,37 +1,12 @@
 import type { Deck, Card, Rating } from '../types';
-import { API_CONFIG } from './api-config';
+import { pb } from '../lib/pocketbase';
+import { computeNextReview } from '../utils/srs';
 
 // uniform API response format
 export interface ApiResponse<T> {
   data: T | null;
   error: string | null;
 }
-
-// underlying request helper
-async function request<T>(
-  url: string,
-  opts: RequestInit = {}
-): Promise<ApiResponse<T>> {
-  try {
-    const res = await fetch(url, opts);
-    if (!res.ok) {
-      // try to parse error message from body
-      const body = await res.json().catch(() => null);
-      const message = body && body.error ? body.error : res.statusText;
-      return { data: null, error: message };
-    }
-    if (res.status === 204) {
-      return { data: null, error: null };
-    }
-    const json = (await res.json()) as ApiResponse<T>;
-    return json;
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : String(err);
-    return { data: null, error: message || 'Network error' };
-  }
-}
-
-const BASE = API_CONFIG.baseUrl;
 
 // define planned backend operations
 export interface ApiService {
@@ -63,59 +38,105 @@ export interface ApiService {
   // additional operations can be added as needed
 }
 
-// actual implementation using fetch
+// actual implementation using PocketBase
 export const api: ApiService = {
-      async fetchDecks() {
-        return request<Deck[]>(`${BASE}/decks`);
-      },
-      async createDeck(title, description) {
-        return request<Deck>(`${BASE}/decks`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title, description }),
-        });
-      },
-      async updateDeck(deckId, data) {
-        return request<Deck>(`${BASE}/decks/${deckId}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-      },
-      async deleteDeck(deckId) {
-        return request<null>(`${BASE}/decks/${deckId}`, {
-          method: 'DELETE',
-        });
-      },
-      async createCard(deckId, front, back, tags = []) {
-        return request<Card>(`${BASE}/decks/${deckId}/cards`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ front, back, tags }),
-        });
-      },
-      async updateCard(cardId, data) {
-        return request<Card>(`${BASE}/cards/${cardId}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-      },
-      async deleteCard(cardId) {
-        return request<null>(`${BASE}/cards/${cardId}`, {
-          method: 'DELETE',
-        });
-      },
-      async rateCard(cardId, rating) {
-        return request<Card>(`${BASE}/cards/${cardId}/rate`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ rating }),
-        });
-      },
-      async resetCard(cardId) {
-        return request<Card>(`${BASE}/cards/${cardId}/reset`, {
-          method: 'POST',
-        });
-      },
-    };
+  async fetchDecks() {
+    try {
+      const decks = await pb.collection('decks').getFullList<Deck>({ sort: '-created' });
+      // For each deck, fetch its cards
+      const decksWithCards = await Promise.all(
+        decks.map(async (deck) => {
+          const cards = await pb.collection('cards').getFullList<Card>({
+            filter: `deckId = "${deck.id}"`,
+            sort: '-created',
+          });
+          return { ...deck, cards };
+        })
+      );
+      return { data: decksWithCards, error: null };
+    } catch (err: any) {
+      return { data: null, error: err.message || 'Failed to fetch decks' };
+    }
+  },
+  async createDeck(title, description) {
+    try {
+      const data = { title, description };
+      const record = await pb.collection('decks').create<Deck>(data);
+      return { data: { ...record, cards: [] }, error: null };
+    } catch (err: any) {
+      return { data: null, error: err.message || 'Failed to create deck' };
+    }
+  },
+  async updateDeck(deckId, data) {
+    try {
+      const record = await pb.collection('decks').update<Deck>(deckId, data);
+      // Need to refetch cards since update might not include them
+      const cards = await pb.collection('cards').getFullList<Card>({
+        filter: `deckId = "${deckId}"`,
+        sort: '-created',
+      });
+      return { data: { ...record, cards }, error: null };
+    } catch (err: any) {
+      return { data: null, error: err.message || 'Failed to update deck' };
+    }
+  },
+  async deleteDeck(deckId) {
+    try {
+      await pb.collection('decks').delete(deckId);
+      return { data: null, error: null };
+    } catch (err: any) {
+      return { data: null, error: err.message || 'Failed to delete deck' };
+    }
+  },
+  async createCard(deckId, front, back, tags = []) {
+    try {
+      const data = { deckId, front, back, tags, status: 'new', interval: 1, easeFactor: 2.5, dueDate: new Date().toISOString(), createdAt: new Date().toISOString(), lastReviewedAt: null };
+      const record = await pb.collection('cards').create<Card>(data);
+      return { data: record, error: null };
+    } catch (err: any) {
+      return { data: null, error: err.message || 'Failed to create card' };
+    }
+  },
+  async updateCard(cardId, data) {
+    try {
+      const record = await pb.collection('cards').update<Card>(cardId, data);
+      return { data: record, error: null };
+    } catch (err: any) {
+      return { data: null, error: err.message || 'Failed to update card' };
+    }
+  },
+  async deleteCard(cardId) {
+    try {
+      await pb.collection('cards').delete(cardId);
+      return { data: null, error: null };
+    } catch (err: any) {
+      return { data: null, error: err.message || 'Failed to delete card' };
+    }
+  },
+  async rateCard(cardId, rating) {
+    try {
+      // First, get the current card
+      const currentCard = await pb.collection('cards').getOne<Card>(cardId);
+      // Compute next review
+      const srUpdates = computeNextReview(currentCard, rating);
+      const updates = {
+        ...srUpdates,
+        lastReviewedAt: new Date().toISOString(),
+      };
+      // Update the card
+      const record = await pb.collection('cards').update<Card>(cardId, updates);
+      return { data: record, error: null };
+    } catch (err: any) {
+      return { data: null, error: err.message || 'Failed to rate card' };
+    }
+  },
+  async resetCard(cardId) {
+    try {
+      const data = { status: 'new', interval: 1, easeFactor: 2.5, dueDate: new Date().toISOString(), lastReviewedAt: null };
+      const record = await pb.collection('cards').update<Card>(cardId, data);
+      return { data: record, error: null };
+    } catch (err: any) {
+      return { data: null, error: err.message || 'Failed to reset card' };
+    }
+  },
+};
