@@ -9,12 +9,14 @@ interface CardFlipProps {
 
 export default function CardFlip({ front, back, flipped, onFlip }: CardFlipProps) {
   return (
-    <div className={`card-flip-container ${flipped ? 'flipped' : ''}`}> 
-      <div className="card-content" onClick={onFlip}>
-        <div className="card-side front">
-          {flipped ? back : front}
+    <div className={`card-flip-container ${flipped ? 'flipped' : ''}`} onClick={onFlip}>
+      <div className="card-inner">
+        <div className="card-side card-front">
+          {front}
         </div>
-        <p className="flip-hint">Click to flip</p>
+        <div className="card-side card-back">
+          {back}
+        </div>
       </div>
     </div>
   );

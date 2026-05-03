@@ -20,6 +20,9 @@ async function request<T>(
       const message = body && body.error ? body.error : res.statusText;
       return { data: null, error: message };
     }
+    if (res.status === 204) {
+      return { data: null, error: null };
+    }
     const json = (await res.json()) as ApiResponse<T>;
     return json;
   } catch (err: unknown) {
