@@ -1,6 +1,6 @@
 # FlashFlow - Study Flashcard System
 
-**GitHub Pages:**
+**GitHub Pages:** https://movcharenko.github.io/Ovcharenko-Frontend-Final/
 
 A modern, efficient flashcard study application built with React, TypeScript, and Vite. Leveraging spaced repetition systems (SRS) to optimize learning efficiency.
 

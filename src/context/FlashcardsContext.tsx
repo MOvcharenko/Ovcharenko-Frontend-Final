@@ -1,4 +1,4 @@
-import { createContext, useContext, type ReactNode, useEffect, useMemo } from 'react';
+import { createContext, useContext, type ReactNode } from 'react';
 import { useFlashcardsStore, type FlashcardsStore } from '../store/flashcardsStore';
 
 type FlashcardsContextType = FlashcardsStore;
@@ -8,20 +8,8 @@ const FlashcardsContext = createContext<FlashcardsContextType | null>(null);
 export function FlashcardsProvider({ children }: { children: ReactNode }) {
   const flashcards = useFlashcardsStore();
 
-  const memoizedFlashcards = useMemo(() => flashcards, [
-    flashcards.decks,
-    flashcards.activeSession,
-    flashcards.loading,
-    flashcards.error,
-    // actions are stable from store
-  ]);
-
-  useEffect(() => {
-    flashcards.loadDecks();
-  }, []); // empty dependency, only on mount
-
   return (
-    <FlashcardsContext.Provider value={memoizedFlashcards}>
+    <FlashcardsContext.Provider value={flashcards}>
       {children}
     </FlashcardsContext.Provider>
   );

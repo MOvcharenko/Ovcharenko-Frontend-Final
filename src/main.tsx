@@ -7,10 +7,10 @@ import { FlashcardsProvider } from './context/FlashcardsContext';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-  <BrowserRouter>
-    <FlashcardsProvider>
-      <App />
-    </FlashcardsProvider>
-  </BrowserRouter>
+    <BrowserRouter basename="/Ovcharenko-Frontend-Final/">
+      <FlashcardsProvider>
+        <App />
+      </FlashcardsProvider>
+    </BrowserRouter>
   </StrictMode>,
 )
