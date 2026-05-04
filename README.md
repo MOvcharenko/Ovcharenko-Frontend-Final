@@ -14,7 +14,7 @@ FlashFlow is designed as a clean, distraction-free study companion that emphasiz
 - **Build Tool**: Vite
 - **Routing**: React Router v6
 - **Styling**: CSS modules and vanilla CSS
-- **Backend**: Local Express.js server with file-based JSON storage
+- **Persistence**: LocalStorage via Zustand persist middleware (no backend required)
 - **Authentication**: None (local app, no user accounts)
 
 ## Core Entities
@@ -177,13 +177,13 @@ server/
 
 Data is persisted on the backend in a file at `server/data/db.json`. The Express server
 stores the full `AppState` object with decks and active session information; the file is
-automatically created when the server first receives a write. **Both frontend and backend
+  npm install
 must be running simultaneously for the application to function.**
 
 ## Route Structure
 
 - **`/`** → Home page with deck list and daily stats
-- **`/decks/:deckId`** → Deck details and card list
+  # No backend or server is required.
 - **`/decks/:deckId/study`** → Active study session
 
 ## Getting Started
@@ -198,7 +198,9 @@ npm run dev
 # In a separate terminal, start the backend API server
 npm run server
 
-# Build for production
+  ### Persistence Choice
+
+  **Zustand persist middleware with localStorage**. All state is stored in the browser, with no backend or server required. This enables instant load/save, offline use, and zero deployment complexity.
 npm run build
 
 # Check TypeScript
@@ -206,23 +208,32 @@ npm run lint
 ```
 
 ---
-
+  Just run:
 ## Project 5: Backend & Persistence
 
 ### Backend Choice
-
-**Express.js with file-based JSON storage** (`server/data/db.json`). Chosen because it matches the existing TypeScript stack with zero additional infrastructure — no database server to install or configure, data is human-readable and inspectable, and the full `AppState` shape from `src/types.ts` maps directly to the file without a schema migration layer.
+  npm install
+  npm run dev
 
 ### Authentication
-
-Authentication is not implemented. FlashFlow is a single-user local application — it runs entirely on `localhost` with no user accounts, no login flow, and no protected routes. Adding auth would introduce complexity (session tokens, protected route guards, a login page) that is out of scope for a personal study tool with no multi-user or remote access requirements.
-
-### How to Run
-
-Both the frontend and backend must be running simultaneously. Open two terminals:
+  No backend or server is required. All data is stored in your browser.
 
 **Terminal 1 — Frontend:**
 ```bash
+  1. Set the Vite base path for GitHub Pages:
+     - In `vite.config.ts`, ensure you have: `base: './',`
+  2. Build the app:
+     ```bash
+     npm run build
+     ```
+  3. Push the contents of the `dist/` folder to your `gh-pages` branch, or use a tool like `gh-pages`:
+     ```bash
+     npm install --save-dev gh-pages
+     npx gh-pages -d dist
+     ```
+  4. Set your repository's GitHub Pages source to the `gh-pages` branch.
+
+  Your app will be live at `https://<your-username>.github.io/<repo-name>/`.
 npm install       # first time only
 npm run dev       # starts Vite on http://localhost:5173
 ```
@@ -236,7 +247,7 @@ The backend creates `server/data/db.json` automatically on the first write. If t
 
 > **Note:** The frontend uses `/api` by default during development and requires the backend to be started separately with `npm run server`. If the backend is not running, network requests will fail with `Failed to fetch`.
 
-## Features
+  - **Data Persistence**: All data is automatically saved to localStorage and survives page reloads
 
 FlashFlow provides a comprehensive flashcard study experience with the following capabilities:
 

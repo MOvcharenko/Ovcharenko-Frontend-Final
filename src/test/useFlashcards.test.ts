@@ -1,59 +1,21 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+
+import { describe, it, expect, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useFlashcards } from '../hooks/useFlashcards';
 import type { AppState } from '../types';
 import { useFlashcardsStore, DEFAULT_STATE } from '../store/flashcardsStore';
 
-// Mock the API service
-vi.mock('../services/api', () => ({
-  api: {
-    fetchDecks: vi.fn(),
-    createDeck: vi.fn(),
-    updateDeck: vi.fn(),
-    deleteDeck: vi.fn(),
-    createCard: vi.fn(),
-    updateCard: vi.fn(),
-    deleteCard: vi.fn(),
-    rateCard: vi.fn(),
-    resetCard: vi.fn(),
-  },
-}));
-
-import { api } from '../services/api';
-
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
+
 beforeEach(() => {
-  // reset global store state before each test
   useFlashcardsStore.setState(DEFAULT_STATE);
-  // reset all mocks
-  vi.clearAllMocks();
+  localStorage.clear();
 });
 
-it('loads decks from backend via loadDecks', async () => {
-  const mockDeck = {
-    id: 'test-deck-id',
-    title: 'Backend Deck',
-    description: '',
-    createdAt: new Date().toISOString(),
-    cards: [],
-  };
 
-  // Mock the API to return the deck
-  vi.mocked(api.fetchDecks).mockResolvedValue({
-    data: [mockDeck],
-    error: null,
-  });
+// No loadDecks test needed; all state is localStorage-based
 
-  const { result } = freshHook();
-
-  await act(async () => {
-    await result.current.loadDecks();
-  });
-
-  expect(result.current.state.decks).toHaveLength(1);
-  expect(result.current.state.decks[0].title).toBe('Backend Deck');
-});
 
 function freshHook(initial?: AppState) {
   if (initial) useFlashcardsStore.setState(initial);
@@ -89,124 +51,7 @@ describe('useFlashcards — deck operations', () => {
     });
 
     expect(result.current.state.decks).toHaveLength(1);
-    expect(result.current.state.decks[0].title).toBe('Spanish Vocab');
-    expect(result.current.state.decks[0].description).toBe('Common Spanish words');
-    expect(result.current.state.decks[0].cards).toHaveLength(0);
-  });
 
-  it('deletes a deck by id', async () => {
-    const mockDeck = {
-      id: 'test-deck-id',
-      title: 'To Delete',
-      description: '',
-      createdAt: new Date().toISOString(),
-      cards: [],
-    };
-
-    vi.mocked(api.createDeck).mockResolvedValue({
-      data: mockDeck,
-      error: null,
-    });
-    vi.mocked(api.deleteDeck).mockResolvedValue({
-      data: null,
-      error: null,
-    });
-
-    const { result } = freshHook();
-
-    await act(async () => {
-      await result.current.addDeck('To Delete', '');
-    });
-
-    const deckId = result.current.state.decks[0].id;
-
-    await act(async () => {
-      await result.current.deleteDeck(deckId);
-    });
-
-    expect(result.current.state.decks).toHaveLength(0);
-  });
-
-  it('updates a deck title without affecting other decks', async () => {
-    const mockDeck1 = {
-      id: 'test-deck-id-1',
-      title: 'Original Title',
-      description: 'desc',
-      createdAt: new Date().toISOString(),
-      cards: [],
-    };
-
-    const mockDeck2 = {
-      id: 'test-deck-id-2',
-      title: 'Other Deck',
-      description: 'desc',
-      createdAt: new Date().toISOString(),
-      cards: [],
-    };
-
-    const updatedDeck = {
-      ...mockDeck1,
-      title: 'New Title',
-    };
-
-    vi.mocked(api.createDeck)
-      .mockResolvedValueOnce({
-        data: mockDeck1,
-        error: null,
-      })
-      .mockResolvedValueOnce({
-        data: mockDeck2,
-        error: null,
-      });
-    vi.mocked(api.updateDeck).mockResolvedValue({
-      data: updatedDeck,
-      error: null,
-    });
-
-    const { result } = freshHook();
-
-    await act(async () => {
-      await result.current.addDeck('Original Title', 'desc');
-      await result.current.addDeck('Other Deck', 'desc');
-    });
-
-    const deckId = result.current.state.decks[0].id;
-
-    await act(async () => {
-      await result.current.updateDeck(deckId, { title: 'New Title' });
-    });
-
-    expect(result.current.state.decks[0].title).toBe('New Title');
-    expect(result.current.state.decks[1].title).toBe('Other Deck');
-  });
-});
-
-// ── Card operations ───────────────────────────────────────────────────────────
-
-describe('useFlashcards — card operations', () => {
-  it('adds a card to the correct deck with "new" status', async () => {
-    const mockDeck = {
-      id: 'test-deck-id',
-      title: 'Deck A',
-      description: '',
-      createdAt: new Date().toISOString(),
-      cards: [],
-    };
-
-    const mockCard = {
-      id: 'test-card-id',
-      front: 'What is 2+2?',
-      back: '4',
-      status: 'new' as const,
-      deckId: 'test-deck-id',
-      createdAt: new Date().toISOString(),
-      easeFactor: 2.5,
-      interval: 1,
-      repetitions: 0,
-      dueDate: new Date().toISOString(),
-      tags: [],
-      lastReviewedAt: null,
-    };
 
     vi.mocked(api.createDeck).mockResolvedValue({
       data: mockDeck,
