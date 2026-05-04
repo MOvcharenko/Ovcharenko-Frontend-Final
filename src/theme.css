@@ -998,6 +998,7 @@ body::before {
 .action-section {
   max-width: 600px;
   margin: 0 auto var(--spacing-xl);
+  text-align: center;
 }
 
 /* ── Deck Detail Page ────────────────────────────────────── */

@@ -11,7 +11,9 @@ function StudyPage() {
 
   const deck = deckId ? getDeckById(deckId) : null;
   const dueCards = deckId ? getCardsDueToday(deckId) : [];
-  const session = activeSession;
+
+  // If there's a completed session, reset it for a new session
+  const session = activeSession?.isComplete ? null : activeSession;
 
   if (!deck) return <p>Deck not found.</p>;
 
