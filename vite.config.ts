@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/<repository-name>/', // Replace with your actual repository name for GitHub Pages
+  base: 'https://github.com/MOvcharenko/Ovcharenko-Frontend-Final', // Replace with your actual repository name for GitHub Pages
   server: {
     proxy: {
       '/api': {
