@@ -4,16 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: 'https://github.com/MOvcharenko/Ovcharenko-Frontend-Final', // Replace with your actual repository name for GitHub Pages
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
-        secure: false,
-      },
-    },
-  },
+  base: '/Ovcharenko-Frontend-Final/', // GitHub Pages project repository
   test: {
     globals: true,           // So you don't need to import describe/it/expect
     environment: 'jsdom',    // Simulates browser environment for React components
