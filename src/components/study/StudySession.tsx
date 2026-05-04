@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Card, Rating } from '../types';
+import type { Card, Rating } from '../../types';
 import CardFlip from '../card/CardFlip';
 import RatingButtons from './RatingButtons';
 import SessionSummary from './SessionSummary';
