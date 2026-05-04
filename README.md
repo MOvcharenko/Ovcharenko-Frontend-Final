@@ -1,5 +1,7 @@
 # FlashFlow - Study Flashcard System
 
+**GitHub Pages:**
+
 A modern, efficient flashcard study application built with React, TypeScript, and Vite. Leveraging spaced repetition systems (SRS) to optimize learning efficiency.
 
 ## App Theme
