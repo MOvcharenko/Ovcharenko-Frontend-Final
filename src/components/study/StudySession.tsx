@@ -32,12 +32,14 @@ export default function StudySession({
   const [isFlipped, setIsFlipped] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [sessionStarted, setSessionStarted] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
 
   function handleStart() {
     startSession(deckId);
     setSessionStarted(true);
     setCurrentIndex(0);
     setIsFlipped(false);
+    setIsComplete(false);
   }
 
   function handleRating(rating: Rating) {
@@ -47,6 +49,8 @@ export default function StudySession({
     rateCard(card.id, rating);
 
     if (currentIndex >= dueCards.length - 1) {
+      // Mark complete and end the session
+      setIsComplete(true);
       endSession();
     } else {
       setCurrentIndex((i) => i + 1);
@@ -54,7 +58,8 @@ export default function StudySession({
     }
   }
 
-  if (session?.isComplete) {
+  // Show summary after session is marked complete
+  if (isComplete) {
     const stats = getSessionStats();
     return stats ? (
       <SessionSummary
@@ -64,19 +69,25 @@ export default function StudySession({
         incorrect={stats.incorrect}
         accuracy={stats.accuracy}
       />
-    ) : null;
+    ) : (
+      <SessionSummary
+        deckId={deckId}
+        total={dueCards.length}
+        correct={0}
+        incorrect={0}
+        accuracy={0}
+      />
+    );
   }
 
   if (!sessionStarted) {
     return (
-      <>
-        <StudyIntro
-          deckTitle={deckTitle}
-          dueCount={dueCards.length}
-          onStart={handleStart}
-          deckId={deckId}
-        />
-      </>
+      <StudyIntro
+        deckTitle={deckTitle}
+        dueCount={dueCards.length}
+        onStart={handleStart}
+        deckId={deckId}
+      />
     );
   }
 
