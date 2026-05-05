@@ -9,14 +9,20 @@ interface CardFlipProps {
 
 export default function CardFlip({ front, back, flipped, onFlip }: CardFlipProps) {
   return (
-    <div className={`card-flip-container ${flipped ? 'flipped' : ''}`} onClick={onFlip}>
+    <div className="card-flip-container" onClick={onFlip}>
       <div className="card-inner">
-        <div className="card-side card-front">
-          {front}
-        </div>
-        <div className="card-side card-back">
-          {back}
-        </div>
+        {!flipped ? (
+          <div className="card-front">
+            <div className="card-text">{front}</div>
+          </div>
+        ) : (
+          <div className="card-back">
+            <div className="card-text">{back}</div>
+          </div>
+        )}
+      </div>
+      <div className="flip-hint">
+        <span>🖱️</span> Tap to {flipped ? 'flip back' : 'reveal answer'}
       </div>
     </div>
   );

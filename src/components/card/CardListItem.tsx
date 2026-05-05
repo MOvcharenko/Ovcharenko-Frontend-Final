@@ -11,10 +11,10 @@ interface CardListItemProps {
 function CardListItem({ card, onDelete, showDue }: CardListItemProps) {
   return (
     <div className={`card card-${card.status}`}>
-      <div className="card-front">
+      <div className="card-q">
         <strong>Q:</strong> {card.front}
       </div>
-      <div className="card-back">
+      <div className="card-a">
         <strong>A:</strong> {card.back}
       </div>
       {showDue && <small>Due: {card.dueDate.slice(0, 10)}</small>}

@@ -517,16 +517,16 @@ body::before {
 .card.card-learning { border-left: 3px solid var(--status-learning); }
 .card.card-mastered { border-left: 3px solid var(--status-mastered); }
 
-/* Q/A card content */
-.card-front,
-.card-back {
+/* Q/A content inside card list items */
+.card-q,
+.card-a {
   margin-bottom: var(--spacing-xs);
   font-size: var(--font-size-sm);
   line-height: 1.5;
 }
 
-.card-front strong,
-.card-back strong {
+.card-q strong,
+.card-a strong {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
@@ -555,40 +555,29 @@ body::before {
   width: 100%;
   max-width: 560px;
   margin: 0 auto;
-  perspective: 1400px;
   cursor: pointer;
   user-select: none;
 }
 
-/* Card body (the rotating element) */
-.card-inner,
-.card-content {
+/* Card body */
+.card-inner {
   position: relative;
   width: 100%;
   height: 220px;
-  transform-style: preserve-3d;
-  transition: transform 0.55s cubic-bezier(0.45, 0, 0.15, 1);
   border-radius: var(--radius-xl);
   filter: drop-shadow(0 8px 24px rgb(26 39 68 / 0.14));
-  transition-property: transform, filter;
+  transition: filter 0.55s cubic-bezier(0.45, 0, 0.15, 1);
 }
 
-.card-flip-container:hover .card-inner,
-.card-flip-container:hover .card-content {
+.card-flip-container:hover .card-inner {
   filter: drop-shadow(0 16px 36px rgb(26 39 68 / 0.20));
 }
 
-.card-flip-container.flipped .card-inner,
-.card-flip-container.flipped .card-content {
-  transform: rotateY(180deg);
-}
-
-/* Both faces shared */
-.card-side {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+/* Both faces */
+.card-front,
+.card-back {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -596,12 +585,18 @@ body::before {
   text-align: center;
   padding: var(--spacing-xl) var(--spacing-2xl);
   border-radius: var(--radius-xl);
-  border: 1.5px solid var(--color-border);
   overflow: hidden;
+  animation: cardReveal 0.3s ease-out;
 }
 
-/* Face label badge */
-.card-side::before {
+@keyframes cardReveal {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Face labels */
+.card-front::before {
+  content: 'Question';
   position: absolute;
   top: 10px;
   left: 14px;
@@ -614,27 +609,35 @@ body::before {
   border-radius: var(--radius-full);
   border: 1px solid currentColor;
   line-height: 1.6;
-  pointer-events: none;
+  color: var(--brand-amber);
 }
 
-/* Front face — deep navy */
-.card-side.front,
-.card-side.card-front {
+.card-back::before {
+  content: 'Answer';
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  font-size: 10px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  padding: 1px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid currentColor;
+  line-height: 1.6;
+  color: var(--brand-amber);
+}
+
+/* Front face */
+.card-front {
   background: linear-gradient(140deg, #1e2f52 0%, #1a2744 55%, #162036 100%);
   color: var(--color-text-on-dark);
-  transform: rotateY(0deg);
+  border: 1.5px solid var(--color-border);
 }
 
-.card-side.front::before,
-.card-side.card-front::before {
-  content: 'Question';
-  color: var(--brand-amber);
-  border-color: var(--brand-amber);
-}
-
-/* Decorative orb on front */
-.card-side.front::after,
-.card-side.card-front::after {
+/* Front decorative orb */
+.card-front::after {
   content: '';
   position: absolute;
   top: -50px;
@@ -646,21 +649,11 @@ body::before {
   pointer-events: none;
 }
 
-/* Back face — warm white */
-.card-side.back,
-.card-side.card-back {
+/* Back face */
+.card-back {
   background: #fff;
   color: var(--color-text-primary);
-  transform: rotateY(180deg);
-  border-color: var(--brand-amber);
-  border-width: 2px;
-}
-
-.card-side.back::before,
-.card-side.card-back::before {
-  content: 'Answer';
-  color: var(--brand-amber);
-  border-color: var(--brand-amber);
+  border: 2px solid var(--brand-amber);
 }
 
 /* Card text */
@@ -673,8 +666,7 @@ body::before {
   z-index: 1;
 }
 
-.card-side.front .card-text,
-.card-side.card-front .card-text {
+.card-front .card-text {
   font-family: var(--font-display);
   font-size: var(--font-size-xl);
   font-weight: 400;
@@ -688,14 +680,39 @@ body::before {
   50%       { filter: drop-shadow(0 12px 32px rgb(26 39 68 / 0.22)); }
 }
 
-.card-flip-container:not(.flipped) .card-inner,
-.card-flip-container:not(.flipped) .card-content {
+.card-inner {
   animation: cardIdle 3s ease-in-out infinite;
 }
+
+.card-flip-container:hover .card-inner {
+  animation: none;
+}
+
+/* Flip hint */
+.flip-hint {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.04em;
+  margin-top: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+/* Pulse glow when idle */
+@keyframes cardIdle {
+  0%, 100% { filter: drop-shadow(0 8px 24px rgb(26 39 68 / 0.14)); }
+  50%       { filter: drop-shadow(0 12px 32px rgb(26 39 68 / 0.22)); }
+}
+
+.card-flip-container:not(.flipped) .card-inner {
+  animation: cardIdle 3s ease-in-out infinite;
+}
+
 .card-flip-container:hover .card-inner,
-.card-flip-container:hover .card-content,
-.card-flip-container.flipped .card-inner,
-.card-flip-container.flipped .card-content {
+.card-flip-container.flipped .card-inner {
   animation: none;
 }
 
