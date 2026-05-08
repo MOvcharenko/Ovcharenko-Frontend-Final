@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import type { Card, Rating } from '../../types';
 import CardFlip from '../card/CardFlip';
 import RatingButtons from './RatingButtons';
@@ -23,7 +23,7 @@ export default function StudySession({
   deckId,
   deckTitle,
   dueCards,
-  session,
+  session: _session, // prefixed with underscore to indicate intentionally unused
   startSession,
   rateCard,
   endSession,
