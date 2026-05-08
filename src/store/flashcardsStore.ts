@@ -51,11 +51,7 @@ export interface FlashcardsStore extends AppState {
   getSessionStats: () =>
     | { correct: number; incorrect: number; accuracy: number; total: number }
     | null;
-  getDeckStats: (
-    deckId: string
-  ) =>
-    | { total: number; mastered: number; learning: number; newCards: number }
-    | null;
+  getDeckStats: (deckId: string) => { total: number; mastered: number; review: number; learning: number; newCards: number } | null;
 }
 
 export const useFlashcardsStore = create<FlashcardsStore>()(
@@ -271,14 +267,11 @@ export const useFlashcardsStore = create<FlashcardsStore>()(
         const deck = get().decks.find((d) => d.id === deckId);
         if (!deck) return null;
         const total = deck.cards.length;
-        const mastered = deck.cards.filter(
-          (c) => c.status === 'mastered'
-        ).length;
-        const learning = deck.cards.filter(
-          (c) => c.status === 'learning'
-        ).length;
+        const mastered = deck.cards.filter((c) => c.status === 'mastered').length;
+        const review = deck.cards.filter((c) => c.status === 'review').length;
+        const learning = deck.cards.filter((c) => c.status === 'learning').length;
         const newCards = deck.cards.filter((c) => c.status === 'new').length;
-        return { total, mastered, learning, newCards };
+        return { total, mastered, review, learning, newCards };
       },
     }),
     {

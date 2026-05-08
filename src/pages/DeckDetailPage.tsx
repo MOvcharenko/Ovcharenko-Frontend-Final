@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useFlashcardsContext } from '../context/FlashcardsContext';
 import DeckStats from '../components/deck/DeckStats';
@@ -10,6 +10,7 @@ import Subtitle from '../components/common/Subtitle';
 function DeckDetailPage() {
   const { deckId } = useParams<{ deckId: string }>();
   const { addCard, deleteCard, resetDeck, getDeckById, getDeckStats } = useFlashcardsContext();
+  const [showHowItWorks, setShowHowItWorks] = useState(false);
 
   const deck = deckId ? getDeckById(deckId) : null;
 
@@ -35,6 +36,7 @@ function DeckDetailPage() {
             total={stats.total}
             newCards={stats.newCards}
             learning={stats.learning}
+            review={stats.review}
             mastered={stats.mastered}
           />
         )}
@@ -52,6 +54,63 @@ function DeckDetailPage() {
           onDelete={(cardId) => deleteCard(deck.id, cardId)}
           showDue
         />
+      </section>
+
+      {/* ── SRS How It Works ──────────────────────────── */}
+      <section className="srs-explainer">
+        <button
+          className="btn btn-ghost srs-toggle"
+          onClick={() => setShowHowItWorks((v) => !v)}
+        >
+          {showHowItWorks ? '▲' : '▼'} How Review Scheduling Works
+        </button>
+        {showHowItWorks && (
+          <div className="srs-content">
+            <p className="srs-intro">
+              FlashFlow uses a <strong>spaced repetition algorithm (SM-2)</strong> to
+              schedule reviews at the optimal time for long-term retention. Each time
+              you rate a card, its next review date is calculated automatically.
+            </p>
+            <div className="srs-ratings">
+              <div className="srs-rating srs-rating-again">
+                <span className="srs-rating-label">Again</span>
+                <span className="srs-rating-desc">You forgot the answer</span>
+                <ul>
+                  <li>Interval → <strong>1 day</strong></li>
+                  <li>Ease ↓ <strong>−0.20</strong> (min 1.3)</li>
+                  <li>Status → <strong className="text-warning">learning</strong></li>
+                </ul>
+              </div>
+              <div className="srs-rating srs-rating-hard">
+                <span className="srs-rating-label">Hard</span>
+                <span className="srs-rating-desc">You recalled with difficulty</span>
+                <ul>
+                  <li>Interval × <strong>1.2</strong></li>
+                  <li>Ease ↓ <strong>−0.15</strong></li>
+                  <li>Status → <strong className="text-warning">learning</strong></li>
+                </ul>
+              </div>
+              <div className="srs-rating srs-rating-good">
+                <span className="srs-rating-label">Good</span>
+                <span className="srs-rating-desc">You recalled correctly</span>
+                <ul>
+                  <li>Interval × <strong>Ease Factor</strong></li>
+                  <li>Ease → <strong>unchanged</strong></li>
+                  <li>Status → <strong className="text-success">review</strong></li>
+                </ul>
+              </div>
+              <div className="srs-rating srs-rating-easy">
+                <span className="srs-rating-label">Easy</span>
+                <span className="srs-rating-desc">You recalled effortlessly</span>
+                <ul>
+                  <li>Interval × Ease × <strong>1.3</strong></li>
+                  <li>Ease ↑ <strong>+0.15</strong></li>
+                  <li>Status → <strong className="text-success">mastered</strong></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       <section className="action-section">
