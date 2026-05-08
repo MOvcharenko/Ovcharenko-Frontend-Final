@@ -16,9 +16,9 @@ export default function SessionSummary({ deckId, total, correct, incorrect, accu
       <p><span>Correct (good/easy):</span> <span>{correct}</span></p>
       <p><span>Incorrect (hard/again):</span> <span>{incorrect}</span></p>
       <p><span>Accuracy:</span> <span>{accuracy}%</span></p>
-      <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', marginTop: '1.25rem' }}>
+      <div className="session-summary-actions">
         <Link className="btn btn-primary" to={`/decks/${deckId}`}>Back to Deck</Link>
-        <Link className="btn btn-outline" to="/">Home</Link>
+        <Link className="btn btn-secondary" to="/">Home</Link>
       </div>
     </div>
   );

@@ -1159,6 +1159,13 @@ body::before {
 }
 .session-summary a:hover { text-decoration: underline; }
 
+.session-summary-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1.25rem;
+}
+
 /* ── Shared Animations ───────────────────────────────────── */
 @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(10px); }

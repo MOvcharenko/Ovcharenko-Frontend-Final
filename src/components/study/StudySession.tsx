@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import type { Card, Rating } from '../../types';
 import CardFlip from '../card/CardFlip';
 import RatingButtons from './RatingButtons';
@@ -34,6 +34,9 @@ export default function StudySession({
   const [sessionStarted, setSessionStarted] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
+  // Snapshot the due cards at session start so they don't disappear mid-session
+  const [sessionCards] = useState<Card[]>(() => [...dueCards]);
+
   function handleStart() {
     startSession(deckId);
     setSessionStarted(true);
@@ -43,13 +46,12 @@ export default function StudySession({
   }
 
   function handleRating(rating: Rating) {
-    const card = dueCards[currentIndex];
+    const card = sessionCards[currentIndex];
     if (!card) return;
 
     rateCard(card.id, rating);
 
-    if (currentIndex >= dueCards.length - 1) {
-      // Mark complete and end the session
+    if (currentIndex >= sessionCards.length - 1) {
       setIsComplete(true);
       endSession();
     } else {
@@ -58,7 +60,6 @@ export default function StudySession({
     }
   }
 
-  // Show summary after session is marked complete
   if (isComplete) {
     const stats = getSessionStats();
     return stats ? (
@@ -72,7 +73,7 @@ export default function StudySession({
     ) : (
       <SessionSummary
         deckId={deckId}
-        total={dueCards.length}
+        total={sessionCards.length}
         correct={0}
         incorrect={0}
         accuracy={0}
@@ -91,14 +92,14 @@ export default function StudySession({
     );
   }
 
-  const currentCard = dueCards[currentIndex];
+  const currentCard = sessionCards[currentIndex];
   if (!currentCard) return <p>No cards to study.</p>;
 
   return (
     <div className="study-page">
       <StudyHeader
         title={`Study: ${deckTitle}`}
-        progressText={`Card ${currentIndex + 1} of ${dueCards.length}`}
+        progressText={`Card ${currentIndex + 1} of ${sessionCards.length}`}
       />
 
       <div className="study-container">
