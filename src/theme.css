@@ -1020,6 +1020,65 @@ body::before {
   text-align: center;
 }
 
+/* ── Fast Deck Create ───────────────────────────────────── */
+.fast-deck-create {
+  max-width: 600px;
+  margin: 0 auto var(--spacing-xl);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-xs);
+}
+
+.fast-deck-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.fast-deck-hint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.fast-deck-format {
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-family: monospace;
+  white-space: pre;
+  overflow-x: auto;
+  margin-bottom: var(--spacing-md);
+  line-height: 1.6;
+}
+
+.fast-deck-textarea {
+  margin-bottom: var(--spacing-sm);
+}
+
+.fast-deck-preview {
+  background: var(--color-success-light);
+  border: 1.5px solid var(--color-success);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  animation: fadeSlideUp 0.25s ease both;
+}
+
+.fast-deck-preview h4 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+}
+
 /* ── Deck Detail Page ────────────────────────────────────── */
 .deck-detail-page {
   max-width: 900px;

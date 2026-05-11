@@ -52,6 +52,7 @@ export interface FlashcardsStore extends AppState {
     | { correct: number; incorrect: number; accuracy: number; total: number }
     | null;
   getDeckStats: (deckId: string) => { total: number; mastered: number; review: number; learning: number; newCards: number } | null;
+  addDeckWithCards: (title: string, description: string, cards: { front: string; back: string }[]) => string;
 }
 
 export const useFlashcardsStore = create<FlashcardsStore>()(
@@ -273,6 +274,35 @@ export const useFlashcardsStore = create<FlashcardsStore>()(
         const newCards = deck.cards.filter((c) => c.status === 'new').length;
         return { total, mastered, review, learning, newCards };
       },
+
+      addDeckWithCards: (title, description, cards) => {
+        const deckId = uuidv4();
+        const now = todayISO();
+        const newCards: Card[] = cards.map(({ front, back }) => ({
+          id: uuidv4(),
+          deckId,
+          front,
+          back,
+          tags: [],
+          status: 'new' as const,
+          interval: 1,
+          easeFactor: 2.5,
+          dueDate: now,
+          createdAt: now,
+          lastReviewedAt: null,
+    }));
+        const newDeck: Deck = {
+          id: deckId,
+          title,
+          description,
+          createdAt: now,
+          cards: newCards,
+        };
+      set((prev) => ({
+        decks: [...prev.decks, newDeck],
+      }));
+      return deckId;
+    },
     }),
     {
       name: 'flashflow-storage',
