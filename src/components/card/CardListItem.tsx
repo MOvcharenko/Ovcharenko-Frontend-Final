@@ -18,7 +18,7 @@ function CardListItem({ card, onDelete, showDue }: CardListItemProps) {
         <strong>A:</strong> {card.back}
       </div>
       {showDue && <small>Due: {card.dueDate.slice(0, 10)}</small>}
-      {onDelete && <DeleteButton onClick={() => onDelete(card.id)} />}
+      {onDelete && <DeleteButton onClick={() => onDelete(card.id)} itemType="card" />}
     </div>
   );
 }

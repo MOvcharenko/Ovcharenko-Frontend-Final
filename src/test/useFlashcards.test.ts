@@ -138,7 +138,7 @@ describe('useFlashcards — study sessions', () => {
     expect(cardBefore.status).toBe('new');
 
     act(() => {
-      result.current.rateCard(cardId, 4);
+      result.current.rateCard(cardId, 'easy');
     });
 
     const cardAfter = result.current.state.decks[0].cards[0];

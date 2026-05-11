@@ -1174,6 +1174,16 @@ body::before {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 /* Staggered entrance — deck cards */
 .decks-list .deck-item { animation: fadeSlideUp 0.4s ease both; }
 .decks-list .deck-item:nth-child(1) { animation-delay: 0.04s; }
@@ -1270,6 +1280,66 @@ body::before {
 .srs-rating-hard  { border-top-color: var(--rating-hard); }
 .srs-rating-good  { border-top-color: var(--rating-good); }
 .srs-rating-easy  { border-top-color: var(--rating-easy); }
+
+/* ── Confirm Dialog ──────────────────────────────────────── */
+.confirm-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(26, 39, 68, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease both;
+}
+
+.confirm-dialog {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  padding: var(--spacing-xl);
+  max-width: 400px;
+  width: 90%;
+  animation: slideUp 0.3s ease both;
+}
+
+.confirm-dialog-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-md) 0;
+  letter-spacing: -0.02em;
+}
+
+.confirm-dialog-message {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--spacing-lg) 0;
+  line-height: 1.6;
+}
+
+.confirm-dialog-buttons {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: flex-end;
+}
+
+.btn-danger {
+  background: var(--color-error);
+  color: #fff;
+  border-color: var(--color-error);
+}
+.btn-danger:hover:not(:disabled) {
+  background: #a93226;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+.btn-danger:active:not(:disabled) { transform: translateY(0); box-shadow: none; }
 
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 768px) {

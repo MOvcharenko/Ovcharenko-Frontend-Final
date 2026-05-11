@@ -17,7 +17,7 @@ function DeckListItem({ deck, onDelete }: DeckListItemProps) {
         <small>{deck.cards.length} cards</small>
       </Link>
       {onDelete && (
-        <DeleteButton onClick={() => onDelete(deck.id)} />
+        <DeleteButton onClick={() => onDelete(deck.id)} itemType="deck" />
       )}
     </div>
   );
